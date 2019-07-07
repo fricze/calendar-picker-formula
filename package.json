@@ -16,18 +16,20 @@
   "license": "MIT",
   "devDependencies": {
     "http-server": "^0.11.1",
-    "shadow-cljs": "^2.8.0"
+    "shadow-cljs": "^2.8.0",
+    "styled-components": "^4.3.2"
   },
   "dependencies": {
     "@cycle/dom": "^22.3.0",
     "@cycle/run": "^5.2.0",
-    "@most/core": "^1.4.2",
+    "@most/core": "^1.5.0",
     "@most/dom-event": "^2.2.0",
-    "@most/scheduler": "^1.2.2",
+    "@most/scheduler": "^1.2.3",
     "create-react-class": "^15.6.3",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-hyperscript": "^3.2.0",
+    "react-pose": "^4.0.8",
     "xstream": "^11.11.0"
   }
 }

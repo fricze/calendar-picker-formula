@@ -1,14 +1,40 @@
 {:source-paths ["src"]
  :dependencies [[cider/cider-nrepl "0.21.1"]
+                [refactor-nrepl "2.4.0"]
                 [fulcrologic/fulcro "2.8.11"]
                 [re-frame "0.10.6"]
                 [reagent "0.8.1"]
+                [gnl/ghostwheel "0.3.9"]
+                [stylefy "1.13.3"]
+                [cljs-styled-components "0.1.8"]
+                [cljs-css-modules "0.2.1"]
                 [lilactown/hx "0.5.2"]]
- :nrepl {:port 9000
-         :middleware []}
- :dev-http {8080 "target/"}
- :builds {:app {:output-dir "target/"
-                :asset-path "."
-                :target :browser
-                :modules {:main {:init-fn app.main/main!}}
-                :devtools {:after-load app.main/reload!}}}}
+ :nrepl        {:port       9000
+                :middleware [cider.nrepl/wrap-apropos
+                             cider.nrepl/wrap-classpath
+                             cider.nrepl/wrap-complete
+                             cider.nrepl/wrap-debug
+                             cider.nrepl/wrap-enlighten
+                             cider.nrepl/wrap-format
+                             cider.nrepl/wrap-info
+                             cider.nrepl/wrap-inspect
+                             cider.nrepl/wrap-macroexpand
+                             cider.nrepl/wrap-ns
+                             cider.nrepl/wrap-out
+                             ;; cider.nrepl/wrap-pprint
+                             ;; cider.nrepl/wrap-pprint-fn
+                             cider.nrepl/wrap-refresh
+                             cider.nrepl/wrap-resource
+                             cider.nrepl/wrap-spec
+                             cider.nrepl/wrap-stacktrace
+                             cider.nrepl/wrap-test
+                             cider.nrepl/wrap-trace
+                             cider.nrepl/wrap-tracker
+                             cider.nrepl/wrap-undef
+                             cider.nrepl/wrap-version]}
+ :dev-http     {8080 "target/"}
+ :builds       {:app {:output-dir "target/"
+                      :asset-path "."
+                      :target     :browser
+                      :modules    {:main {:init-fn app.main/main!}}
+                      :devtools   {:after-load app.main/reload!}}}}
