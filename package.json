@@ -30,6 +30,7 @@
     "react-dom": "^16.8.6",
     "react-hyperscript": "^3.2.0",
     "react-pose": "^4.0.8",
+    "react-useinterval": "^1.0.1",
     "xstream": "^11.11.0"
   }
 }
