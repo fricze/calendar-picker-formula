@@ -80,8 +80,7 @@
 
 (defnc Button [{:keys [text on-click]}]
   [:button {:on-click   on-click
-            :class-name (:task-button form)}
-   text])
+            :class-name (:task-button form)} text])
 
 (defn space []
   [:div {:style {}}])
@@ -89,18 +88,29 @@
 (defn event->value [e]
   (-> e .-target .-value))
 
-(defnc Task []
-  (let [[task dispatch] (useReducer
-                         (fn [state action]
-                           (case (:action/name action)
-                             :set/title       (assoc state :task/title
-                                                     (:action/value action))
-                             :set/description (assoc state :task/description
-                                                     (:action/value action))
-                             state))
+(defmulti task-reducer-step (fn [_ action] (:action/name action)))
 
-                         {:task/title       ""
-                          :task/description ""})]
+(defmethod task-reducer-step :default [state] state)
+
+(defmethod task-reducer-step :set/title
+  [state action]
+  (assoc state :task/title
+         (:action/value action)))
+
+(defmethod task-reducer-step :set/description
+  [state action]
+  (assoc state :task/description
+         (:action/value action)))
+
+(defn empty-task []
+  {:task/title       ""
+   :task/description ""})
+
+(defn task-reducer []
+  (useReducer task-reducer-step (empty-task)))
+
+(defnc Task []
+  (let [[task dispatch] (task-reducer)]
 
     [:div
      {:style {:display        "flex"
