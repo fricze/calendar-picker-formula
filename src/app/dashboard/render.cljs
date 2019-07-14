@@ -31,6 +31,7 @@
 
 (defmethod render-component :default
   [component]
+  (js/console.warn [:component-type/not-implemented (:component/type component)])
   [:div (js/JSON.stringify (clj->js component))])
 
 (defn table-rows [fields data]
