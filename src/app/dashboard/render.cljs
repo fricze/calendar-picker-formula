@@ -18,7 +18,8 @@
 (defmethod render-component :component.type/list
   [{:keys [:list/content]}]
   [:div
-   (map (fn [component] [:div (str (:component/name component))])
+   (map (fn [component]
+        [:div (str (:component/name component))])
       content)])
 
 (defmethod render-component :default
@@ -33,7 +34,7 @@
                       (render-component
                        (merge row field
                               {:component/content
-                               (row (:table.field/key field))}))])
+                               (row (:component.content/path field))}))])
                    fields)])
    data))
 

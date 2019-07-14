@@ -98,18 +98,18 @@
          :file/extension     icon})
       [:pdf :ms-word :ms-publisher :text :zip])
      :component.table/fields
-     [{:component/type  :component.type/icon
-       :table.field/key :file/extension
-       :component/name  :component.name/file-icon}
-      {:component/type  :component.type/text
-       :table.field/key :file/name
-       :component/name  :component.name/file-name}
-      {:component/type  :component.type/date
-       :table.field/key :file/modified-date
-       :component/name  :component.name/modified-date}
-      {:component/type  :component.type/text
-       :table.field/key :file/size
-       :component/name  :component.name/file-size}]}
+     [{:component/type         :component.type/icon
+       :component.content/path :file/extension
+       :component/name         :component.name/file-icon}
+      {:component/type         :component.type/text
+       :component.content/path :file/name
+       :component/name         :component.name/file-name}
+      {:component/type         :component.type/date
+       :component.content/path :file/modified-date
+       :component/name         :component.name/modified-date}
+      {:component/type         :component.type/text
+       :component.content/path :file/size
+       :component/name         :component.name/file-size}]}
 
     {:component/name :component.name/file-details
      :component/type :component.type/list
