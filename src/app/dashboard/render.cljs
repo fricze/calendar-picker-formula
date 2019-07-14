@@ -23,7 +23,9 @@
    {:style {:outline "1px solid #333"}}
    (map (fn [field]
           [:div
-           (render-component (merge field data))])
+           (render-component (merge field data
+                                    {:component/content
+                                     (data (:component.content/path data field))}))])
         fields)])
 
 (defmethod render-component :default
@@ -61,8 +63,8 @@
     (table-rows fields data)]])
 
 (defmethod render-component :component.type/icon
-  [{:keys [:file/extension]}]
-  [:span [(icon extension)]])
+  [{:keys [:component/content]}]
+  [:span [(icon content)]])
 
 (defmethod render-component :component.type/image
   []
