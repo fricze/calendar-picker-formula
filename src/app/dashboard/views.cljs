@@ -127,6 +127,25 @@
       {:component/type         :component.type/text
        :component.content/path :file/extension
        :component/name         :component.name/file-extension}
+      {:component/type :component.type/text-button
+       :component/name :component.name/download}]}
+
+    {:component/name :component.name/file-details
+     :component/type :component.type/list
+     :component/data {:file/size          "250 KB"
+                      :file/modified-date (js/Date.)
+                      :file/name          "Metro Berlin Map"
+                      :file/extension     :pdf}
+     :component.list/fields
+     [{:component/type         :component.type/icon
+       :component.content/path :file/extension
+       :component/name         :component.name/file-icon}
+      {:component/type         :component.type/text
+       :component.content/path :file/name
+       :component/name         :component.name/file-name}
+      {:component/type         :component.type/text
+       :component.content/path :file/extension
+       :component/name         :component.name/file-extension}
       {:component/type         :component.type/text
        :component.content/path :file/modified-date
        :component/name         :component.name/modified-date-time}
