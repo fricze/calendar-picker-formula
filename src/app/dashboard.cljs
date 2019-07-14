@@ -3,17 +3,35 @@
             [cljs-css-modules.macro :refer-macros [defstyle]]
             [hx.hooks :as hooks]
             [app.dashboard.render :refer [render-component]]
-            [app.dashboard.views :as dashboard :refer [files]]
+            [app.dashboard.views :as dashboard]
             ["react-useinterval" :as use-interval]
             ["react-pose" :refer [] :default posed]
             ["react-dom" :as react-dom]))
 
 (defnc Root []
   [:<>
+   [:h1
+    {:style {:font-family "iA Writer Duo S"
+             :font-size   14}}
+    (str "(:components dashboard/clients)")]
+
    [:div
     {:style {:font-family "iA Writer Duo S"
              :font-size   14}}
-    (map render-component (:components files))]])
+    (map render-component (:components dashboard/clients))]
+
+   [:div
+    {:style {:height 100}}]
+
+   [:h1
+    {:style {:font-family "iA Writer Duo S"
+             :font-size   14}}
+    (str "(:components dashboard/files)")]
+
+   [:div
+    {:style {:font-family "iA Writer Duo S"
+             :font-size   14}}
+    (map render-component (:components dashboard/files))]])
 
 (defn run-app! []
   (react-dom/render

@@ -6,11 +6,23 @@
 
 (defmulti render-component :component/type)
 
+(defmethod render-component :component.type/user-name
+  [{:keys [:component/content :component/name]}]
+  (if content
+    [:span (str content)]
+    [:span (str [:content/no-data name])]))
+
+(defmethod render-component :component.type/status
+  [{:keys [:component/content :component/name]}]
+  (if content
+    [:span (str content)]
+    [:span (str [:content/no-data name])]))
+
 (defmethod render-component :component.type/text
   [{:keys [:component/content :component/name]}]
   (if content
     [:span (str content)]
-    [:span (str name)]))
+    [:span (str [:content/no-data name])]))
 
 (defmethod render-component :component.type/date
   [{:keys [:component/content]}]
@@ -20,17 +32,19 @@
   [{:keys [:component/content]}]
   [dateTimeView {:date (js/Date.)}])
 
+(defn list-field [data]
+  (fn [field]
+    (let [path (or (:component.content/path field) identity)]
+      [:div
+       (render-component
+        (assoc field :component/content
+               (path data)))])))
+
 (defmethod render-component :component.type/list
   [{:keys [:component.list/fields :component/data]}]
   [:div
    {:style {:outline "1px solid #333"}}
-   (map (fn [field]
-          [:div
-           (render-component
-            (assoc field :component/content
-                   (data
-                    (:component.content/path field))))])
-        fields)])
+   (map (list-field data) fields)])
 
 (defmethod render-component :default
   [component]
@@ -41,11 +55,12 @@
   (map
    (fn [row] [:tr
               (map (fn [field]
-                     [:td
-                      (render-component
-                       (merge row field
-                              {:component/content
-                               (row (:component.content/path field))}))])
+                     (let [path (or (:component.content/path field) identity)]
+                       [:td
+                        (render-component
+                         (merge row field
+                                {:component/content
+                                 (path row)}))]))
                    fields)])
    data))
 

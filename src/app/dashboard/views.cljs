@@ -47,32 +47,68 @@
    [{:component/name :component.name/sales-charts
      :component/type :component.type/movable-grid}]})
 
+(defn full-name [client]
+  (->> [:client/first-name :client/last-name]
+       (select-keys client)
+       vals
+       (clojure.string/join " ")))
+
 (def clients
   {:components
    [{:component/name :component.name/clients-list
      :component/type :component.type/table
+
      :component.table/headers
      ["Clients" "Phone" "E-mail" "Position" "Industry"
       "Address" "State" "Country" "Status"]
+
+     :component/data
+     (map
+      (fn []
+        {:client/first-name "John"
+         :client/last-name  "Smith"
+         :client/e-mail     "johhn@smith.com"
+         :client/phone      "570570570"
+         :client/position   "Janitor!"
+         :client/industry   "IT"
+         :client/address    "Washington St. Hello 45/67"
+         :client/state      "Washington"
+         :client/country    "United States"
+         :client/status     "no idea"})
+      (range 10))
+
+     ;; `{ first_name, last_name, phone, email, position,
+     ;; industry, address, state, country, status }`
+
      :component.table/fields
-     [{:component/type :component.type/user-name
-       :component/name :component.name/user-name}
-      {:component/type :component.type/text
-       :component/name :component.name/phone}
-      {:component/type :component.type/text
-       :component/name :component.name/e-mail}
-      {:component/type :component.type/text
-       :component/name :component.name/position}
-      {:component/type :component.type/text
-       :component/name :component.name/industry}
-      {:component/type :component.type/address
-       :component/name :component.name/address}
-      {:component/type :component.type/text
-       :component/name :component.name/state}
-      {:component/type :component.type/text
-       :component/name :component.name/country}
-      {:component/type :component.type/status
-       :component/name :component.name/status}]
+     [{:component/type         :component.type/user-name
+       :component.content/path full-name
+       :component/name         :component.name/user-name}
+      {:component/type         :component.type/text
+       :component.content/path :client/phone
+       :component/name         :component.name/phone}
+      {:component/type         :component.type/text
+       :component.content/path :client/e-mail
+       :component/name         :component.name/e-mail}
+      {:component/type         :component.type/text
+       :component.content/path :client/position
+       :component/name         :component.name/position}
+      {:component/type         :component.type/text
+       :component.content/path :client/industry
+       :component/name         :component.name/industry}
+      {:component/type         :component.type/text
+       :component.content/path :client/address
+       :component/name         :component.name/address}
+      {:component/type         :component.type/text
+       :component.content/path :client/state
+       :component/name         :component.name/state}
+      {:component/type         :component.type/text
+       :component.content/path :client/country
+       :component/name         :component.name/country}
+      {:component/type         :component.type/status
+       :component.content/path :client/status
+       :component/name         :component.name/status}]
+
      :component.table/filters
      {:component/type    :component.type/modal
       :component/content [{:field/type :field.type/text
