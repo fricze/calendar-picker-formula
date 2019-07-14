@@ -1,14 +1,17 @@
 (ns app.time
   (:require [hx.react :as hx :refer [defnc]]
             [cljs-css-modules.macro :refer-macros [defstyle]]
-            [hx.hooks :as hooks :refer [useReducer useState]]
+            [hx.hooks :as hooks]
             [stylefy.core :as stylefy :refer [use-style]]
             ["react-useinterval" :as use-interval]
             ["react-pose" :refer [] :default posed]
             ["react-dom" :as react-dom]))
 
-(js/console.log #js {:hidden  {:opacity 0}
-                     :visible {:opacity 1}})
+(def use-state hooks/useState)
+(def use-reducer hooks/useReducer)
+
+;; (js/console.log #js {:hidden  {:opacity 0}
+;;                      :visible {:opacity 1}})
 
 (def blink
   (.span posed #js {:hidden  #js {:opacity 0}
@@ -17,20 +20,15 @@
 (def colors {:color/green "rgb(62, 76, 39)"})
 
 (defstyle form
-  (at-keyframes "blink"
-                [:from {:opacity 0.6}]
-                [:to {:opacity 1}])
-
   [:.task-button {:font-family   "iA Writer Duo S"
                   :border        "none"
                   :border-bottom "1px solid #333"
                   :padding       "0.5rem 1rem"
-                  :font-size     14}]
+                  :font-size     14
+                  :outline    "1px solid #333"
+                  :box-shadow "1px 1px 1px #333"}]
 
   [:.task-button:focus
-   {:outline    "1px solid #333"
-    :box-shadow "1px 1px 1px #333"
-    :animation  [["blink" "2s" :infinite :alternate]]}
    [:&:after {:content "' +'"}]]
 
   [:.label-style {:color       (:color/green colors)
@@ -38,28 +36,23 @@
                   :font-size   16}])
 
 (defnc Textarea [{:keys [value update]}]
-  (let [[state set-state] (useState "hidden")]
-    (use-interval
-     #(set-state (if (= state "hidden") "visible" "hidden"))
-     1000)
+  [:label
+   [:div #_blink
+    #_{:pose state}
+    [:span {:class-name (:label-style form)} "Content"]]
 
-    [:label
-     [blink
-      {:pose state}
-      [:span {:class-name (:label-style form)} "Content"]]
-
-     [:textarea {:on-change update
-                 :value     value
-                 :style     {:font-family   "iA Writer Duo S"
-                             :border        "none"
-                             :border-bottom "1px solid #333"
-                             :resize        "none"
-                             :padding       "0.5rem"
-                             :width         "100%"
-                             :height        "6rem"
-                             :min-height    "3rem"
-                             :outline       "none"
-                             :font-size     14}}]]))
+   [:textarea {:on-change update
+               :value     value
+               :style     {:font-family   "iA Writer Duo S"
+                           :border        "none"
+                           :border-bottom "1px solid #333"
+                           :resize        "none"
+                           :padding       "0.5rem"
+                           :width         "100%"
+                           :height        "6rem"
+                           :min-height    "3rem"
+                           :outline       "none"
+                           :font-size     14}}]])
 
 (defnc Text [{:keys [value update]}]
   [:label
@@ -74,7 +67,7 @@
                         :padding       "0.5rem"
                         :resize        "vertical"
                         :width         "100%"
-                        :outline       "none"
+                        :outline       "1px solid #333"
                         :font-size     14}
             :value     value}]])
 
@@ -107,7 +100,7 @@
    :task/description ""})
 
 (defn task-reducer []
-  (useReducer task-reducer-step (empty-task)))
+  (use-reducer task-reducer-step (empty-task)))
 
 (defnc Task []
   (let [[task dispatch] (task-reducer)]
@@ -128,8 +121,8 @@
 
 (defnc MyComponent [{:keys [initial-name]}]
   ;; use React Hooks for state management
-  (let [[name update-name] (useState initial-name)
-        [state dispatch]   (useReducer
+  (let [[name update-name] (use-state initial-name)
+        [state dispatch]   (use-reducer
                             (fn [state action]
                               (case action
                                 :new/girl (conj state :new/gurl)
