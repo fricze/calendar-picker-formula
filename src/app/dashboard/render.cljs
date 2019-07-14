@@ -23,9 +23,10 @@
    {:style {:outline "1px solid #333"}}
    (map (fn [field]
           [:div
-           (render-component (merge field data
-                                    {:component/content
-                                     (data (:component.content/path data field))}))])
+           (render-component
+            (assoc field :component/content
+                   (data
+                    (:component.content/path field))))])
         fields)])
 
 (defmethod render-component :default
