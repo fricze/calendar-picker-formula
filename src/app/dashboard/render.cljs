@@ -1,5 +1,7 @@
 (ns app.dashboard.render
   (:require
+   ["./components.js" :refer [dateView]]
+   [hx.react :refer [$]]
    [app.icons.icon :refer [icon]]))
 
 (defmulti render-component :component/type)
@@ -12,10 +14,7 @@
 
 (defmethod render-component :component.type/date
   [{:keys [:component/content]}]
-  [:span (str (.toLocaleDateString
-               content
-               "en-US"
-               #js {:month "long" :day "numeric"}))])
+  [dateView {:date (js/Date.)}])
 
 (defmethod render-component :component.type/list
   [{:keys [:component.list/fields :component/data]}]
