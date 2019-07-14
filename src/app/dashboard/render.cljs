@@ -1,6 +1,6 @@
 (ns app.dashboard.render
   (:require
-   ["./components.js" :refer [dateView]]
+   ["./components.js" :refer [dateView dateTimeView]]
    [hx.react :refer [$]]
    [app.icons.icon :refer [icon]]))
 
@@ -15,6 +15,10 @@
 (defmethod render-component :component.type/date
   [{:keys [:component/content]}]
   [dateView {:date (js/Date.)}])
+
+(defmethod render-component :component.type/date-time
+  [{:keys [:component/content]}]
+  [dateTimeView {:date (js/Date.)}])
 
 (defmethod render-component :component.type/list
   [{:keys [:component.list/fields :component/data]}]

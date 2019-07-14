@@ -149,7 +149,7 @@
       {:component/type         :component.type/text
        :component.content/path :file/extension
        :component/name         :component.name/file-extension}
-      {:component/type         :component.type/text
+      {:component/type         :component.type/date-time
        :component.content/path :file/modified-date
        :component/name         :component.name/modified-date-time}
       {:component/type :component.type/text-button
