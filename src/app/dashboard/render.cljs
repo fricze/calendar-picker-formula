@@ -5,8 +5,10 @@
 (defmulti render-component :component/type)
 
 (defmethod render-component :component.type/text
-  [{:keys [:component/content]}]
-  [:span (str content)])
+  [{:keys [:component/content :component/name]}]
+  (if content
+    [:span (str content)]
+    [:span (str name)]))
 
 (defmethod render-component :component.type/date
   [{:keys [:component/content]}]
@@ -73,6 +75,14 @@
 (defmethod render-component :component.type/box
   []
   [:img {:src ""}])
+
+(defmethod render-component :component.type/text-button
+  [{:keys [:component/name]}]
+  [:button (str name)])
+
+(defmethod render-component :component.type/icon-button
+  [{:keys [:component/name]}]
+  [:button (str name)])
 
 (defmethod render-component :component.type/form
   []
