@@ -111,7 +111,7 @@
        :table.field/key :file/size
        :component/name  :component.name/file-size}]}
 
-    {:component/name :component.name/files-list
+    {:component/name :component.name/file-details
      :component/type :component.type/list
      :list/content   [{:component/type :component.type/image
                        :component/name :component.name/file-icon}

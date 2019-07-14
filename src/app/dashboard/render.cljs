@@ -16,8 +16,10 @@
                #js {:month "long" :day "numeric"}))])
 
 (defmethod render-component :component.type/list
-  []
-  [:div])
+  [{:keys [:list/content]}]
+  [:div
+   (map (fn [component] [:div (str (:component/name component))])
+      content)])
 
 (defmethod render-component :default
   [component]
