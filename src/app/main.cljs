@@ -9,41 +9,11 @@
             ["react-dom" :refer [render]]
             ["react-hyperscript" :as h]
             ["./calendar.js" :refer [getDaysInMonthRecursive Calendar]]
+            [app.dashboard :as dash]
             [app.calendar-view :refer [calendar-view]]
-            [app.get-month :refer [get-days-in-month-loop-3]]
-            [app.dashboard.views :as dashboard :refer [files]]))
+            [app.get-month :refer [get-days-in-month-loop-3]]))
 
 (devtools/install!)
-
-(defmulti render-component :component/type)
-
-(defmethod render-component :component.type/text
-  []
-  [:input {:type :text}])
-
-(defmethod render-component :component.type/list
-  []
-  [:div])
-
-(defmethod render-component :component.type/table
-  []
-  [:table])
-
-(defmethod render-component :component.type/image
-  []
-  [:img {:src ""}])
-
-(defmethod render-component :component.type/title
-  []
-  [:img {:src ""}])
-
-(defmethod render-component :component.type/box
-  []
-  [:img {:src ""}])
-
-(defmethod render-component :component.type/form
-  []
-  [:form])
 
 (comment
 
@@ -63,7 +33,7 @@
  )
 
 (defn main! []
-  #_(time/run)
+  (dash/run-app!)
 
   ;; maybe move somwhere like 'run'
   #_(stylefy/init)
@@ -72,6 +42,6 @@
 
 (defn reload! []
 
-  #_(time/run)
+  (dash/run-app!)
   #_(println "[main] reloaded lib:" lib/c lib/d)
   #_(println "[main] reloaded:" a b))

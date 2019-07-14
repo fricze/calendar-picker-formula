@@ -89,15 +89,27 @@
    [{:component/name          :component.name/files-list
      :component/type          :component.type/table
      :component.table/headers [:component.header/empty "Name" "Modified" "Size"]
+     :component.table/data
+     (map
+      (fn [icon]
+        {:file/size          "250 KB"
+         :file/modified-date (js/Date.)
+         :file/name          "Metro Berlin Map"
+         :file/extension     icon})
+      [:pdf :ms-word :ms-publisher :text :zip])
      :component.table/fields
-     [{:component/type :component.type/image
-       :component/name :component.name/file-icon}
-      {:component/type :component.type/text
-       :component/name :component.name/file-name}
-      {:component/type :component.type/text
-       :component/name :component.name/modified-date}
-      {:component/type :component.type/text
-       :component/name :component.name/file-size}]}
+     [{:component/type  :component.type/icon
+       :table.field/key :file/extension
+       :component/name  :component.name/file-icon}
+      {:component/type  :component.type/text
+       :table.field/key :file/name
+       :component/name  :component.name/file-name}
+      {:component/type  :component.type/date
+       :table.field/key :file/modified-date
+       :component/name  :component.name/modified-date}
+      {:component/type  :component.type/text
+       :table.field/key :file/size
+       :component/name  :component.name/file-size}]}
     {:component/name :component.name/files-list
      :component/type :component.type/list
      :list/content   [{:component/type :component.type/image
