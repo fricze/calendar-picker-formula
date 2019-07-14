@@ -95,6 +95,7 @@
         {:file/size          "250 KB"
          :file/modified-date (js/Date.)
          :file/name          "Metro Berlin Map"
+         :file/link-to       "Metro Berlin Map.pdf"
          :file/extension     icon})
       [:pdf :ms-word :ms-publisher :text :zip])
      :component.table/fields
@@ -116,17 +117,18 @@
      :component/data {:file/size          "250 KB"
                       :file/modified-date (js/Date.)
                       :file/name          "Metro Berlin Map"
+                      :file/link-to       "Metro Berlin Map.pdf"
                       :file/extension     :pdf}
      :component.list/fields
      [{:component/type         :component.type/icon
        :component.content/path :file/extension
        :component/name         :component.name/file-icon}
       {:component/type         :component.type/text
-       :component.content/path :file/name
+       :component.content/path :file/size
        :component/name         :component.name/file-name}
       {:component/type         :component.type/text
-       :component.content/path :file/extension
-       :component/name         :component.name/file-extension}
+       :component.content/path :file/link-to
+       :component/name         :component.name/file-name}
       {:component/type :component.type/text-button
        :component/name :component.name/download}]}
 
@@ -135,6 +137,7 @@
      :component/data {:file/size          "250 KB"
                       :file/modified-date (js/Date.)
                       :file/name          "Metro Berlin Map"
+                      :file/link-to       "Metro Berlin Map.pdf"
                       :file/extension     :pdf}
      :component.list/fields
      [{:component/type         :component.type/icon
