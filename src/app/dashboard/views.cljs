@@ -5,12 +5,13 @@
    [{:component/name :component.name/login-form
      :component/type :component.type/form
      :component/content
-     {:fields [{:field/name :workplace
-                :field/type :field.type/text}
-               {:field/name :username
-                :field/type :field.type/text}
-               {:field/name :password
-                :field/type :field.type/password}]}}]})
+     {:form/fields
+      [{:field/name :workplace
+        :field/type :field.type/text}
+       {:field/name :username
+        :field/type :field.type/text}
+       {:field/name :password
+        :field/type :field.type/password}]}}]})
 
 (def welcome-screen
   {:components
@@ -106,6 +107,20 @@
                       {:component/type :component.type/text
                        :component/name :component.name/file-extension}
                       {:component/type :component.type/text
-                       :component/name :component.name/file-extension}]}]})
+                       :component/name :component.name/modified-date-time}
+                      {:component/type :component.type/text-button
+                       :component/name :component.name/share}
+                      {:component/type :component.type/text-button
+                       :component/name :component.name/fill-sign}
+                      {:component/type :component.type/text-button
+                       :component/name :component.name/rename}
+                      {:component/type :component.type/text-button
+                       :component/name :component.name/move}
+                      {:component/type :component.type/text-button
+                       :component/name :component.name/download}
+                      {:component/type :component.type/text-button
+                       :component/name :component.name/delete}
+                      {:component/type :component.type/icon-button
+                       :component/name :component.name/add}]}]})
 
 (def dashboard-app {})
