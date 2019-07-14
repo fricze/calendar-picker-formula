@@ -30,7 +30,11 @@
    [{:component/name :component.name/notifications-title
      :component/type :component.type/title}
     {:component/type :component.type/list
-     :component/name :component.name/notifications-list}]})
+     :component/name :component.name/notifications-list
+     ;; TODO: think about proper type for that field.
+     ;; something that have: name, description, status
+     :list/content   [{:component/type :component.type/notification
+                       :component/name :component.name/notification}]}]})
 
 (def dashboard
   {:components
@@ -46,10 +50,10 @@
   {:components
    [{:component/name :component.name/clients-list
      :component/type :component.type/table
-     :table/headers
+     :component.table/headers
      ["Clients" "Phone" "E-mail" "Position" "Industry"
       "Address" "State" "Country" "Status"]
-     :table/fields
+     :component.table/fields
      [{:component/type :component.type/user-name
        :component/name :component.name/user-name}
       {:component/type :component.type/text
@@ -60,14 +64,48 @@
        :component/name :component.name/position}
       {:component/type :component.type/text
        :component/name :component.name/industry}
-      {:component/type :component.type/text
+      {:component/type :component.type/address
        :component/name :component.name/address}
       {:component/type :component.type/text
        :component/name :component.name/state}
       {:component/type :component.type/text
        :component/name :component.name/country}
       {:component/type :component.type/status
-       :component/name :component.name/status}
-      ]}]})
+       :component/name :component.name/status}]
+     :component.table/filters
+     {:component/type    :component.type/modal
+      :component/content [{:field/type :field.type/text
+                           :field/name :field.name/client-search}
+                          {:field/type :field.type/slider
+                           :field/name :field.name/states-number}
+                          {:button/type :button.type/save
+                           :button/name :button.name/save}
+                          {:button/type :button.type/cancel
+                           :button/name :button.name/cancel}]}}]})
+
+(def files
+  {:components
+   [{:component/name          :component.name/files-list
+     :component/type          :component.type/table
+     :component.table/headers [:component.header/empty "Name" "Modified" "Size"]
+     :component.table/fields
+     [{:component/type :component.type/image
+       :component/name :component.name/file-icon}
+      {:component/type :component.type/text
+       :component/name :component.name/file-name}
+      {:component/type :component.type/text
+       :component/name :component.name/modified-date}
+      {:component/type :component.type/text
+       :component/name :component.name/file-size}]}
+    {:component/name :component.name/files-list
+     :component/type :component.type/list
+     :list/content   [{:component/type :component.type/image
+                       :component/name :component.name/file-icon}
+                      {:component/type :component.type/text
+                       :component/name :component.name/file-name}
+                      {:component/type :component.type/text
+                       :component/name :component.name/file-extension}
+                      {:component/type :component.type/text
+                       :component/name :component.name/file-extension}]}]})
 
 (def dashboard-app {})
