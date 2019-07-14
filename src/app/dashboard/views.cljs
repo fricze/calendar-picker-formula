@@ -121,12 +121,15 @@
      [{:component/type         :component.type/icon
        :component.content/path :file/extension
        :component/name         :component.name/file-icon}
-      {:component/type :component.type/text
-       :component/name :component.name/file-name}
-      {:component/type :component.type/text
-       :component/name :component.name/file-extension}
-      {:component/type :component.type/text
-       :component/name :component.name/modified-date-time}
+      {:component/type         :component.type/text
+       :component.content/path :file/name
+       :component/name         :component.name/file-name}
+      {:component/type         :component.type/text
+       :component.content/path :file/extension
+       :component/name         :component.name/file-extension}
+      {:component/type         :component.type/text
+       :component.content/path :file/modified-date
+       :component/name         :component.name/modified-date-time}
       {:component/type :component.type/text-button
        :component/name :component.name/share}
       {:component/type :component.type/text-button
