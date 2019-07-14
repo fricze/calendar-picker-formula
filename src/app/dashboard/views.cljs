@@ -89,7 +89,7 @@
    [{:component/name          :component.name/files-list
      :component/type          :component.type/table
      :component.table/headers [:component.header/empty "Name" "Modified" "Size"]
-     :component.table/data
+     :component/data
      (map
       (fn [icon]
         {:file/size          "250 KB"
@@ -113,27 +113,33 @@
 
     {:component/name :component.name/file-details
      :component/type :component.type/list
-     :list/content   [{:component/type :component.type/image
-                       :component/name :component.name/file-icon}
-                      {:component/type :component.type/text
-                       :component/name :component.name/file-name}
-                      {:component/type :component.type/text
-                       :component/name :component.name/file-extension}
-                      {:component/type :component.type/text
-                       :component/name :component.name/modified-date-time}
-                      {:component/type :component.type/text-button
-                       :component/name :component.name/share}
-                      {:component/type :component.type/text-button
-                       :component/name :component.name/fill-sign}
-                      {:component/type :component.type/text-button
-                       :component/name :component.name/rename}
-                      {:component/type :component.type/text-button
-                       :component/name :component.name/move}
-                      {:component/type :component.type/text-button
-                       :component/name :component.name/download}
-                      {:component/type :component.type/text-button
-                       :component/name :component.name/delete}
-                      {:component/type :component.type/icon-button
-                       :component/name :component.name/add}]}]})
+     :component/data {:file/size          "250 KB"
+                      :file/modified-date (js/Date.)
+                      :file/name          "Metro Berlin Map"
+                      :file/extension     :pdf}
+     :component.list/fields
+     [{:component/type         :component.type/icon
+       :component.content/path :file/extension
+       :component/name         :component.name/file-icon}
+      {:component/type :component.type/text
+       :component/name :component.name/file-name}
+      {:component/type :component.type/text
+       :component/name :component.name/file-extension}
+      {:component/type :component.type/text
+       :component/name :component.name/modified-date-time}
+      {:component/type :component.type/text-button
+       :component/name :component.name/share}
+      {:component/type :component.type/text-button
+       :component/name :component.name/fill-sign}
+      {:component/type :component.type/text-button
+       :component/name :component.name/rename}
+      {:component/type :component.type/text-button
+       :component/name :component.name/move}
+      {:component/type :component.type/text-button
+       :component/name :component.name/download}
+      {:component/type :component.type/text-button
+       :component/name :component.name/delete}
+      {:component/type :component.type/icon-button
+       :component/name :component.name/add}]}]})
 
 (def dashboard-app {})

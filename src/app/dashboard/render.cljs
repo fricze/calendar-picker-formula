@@ -16,11 +16,13 @@
                #js {:month "long" :day "numeric"}))])
 
 (defmethod render-component :component.type/list
-  [{:keys [:list/content]}]
+  [{:keys [:component.list/fields :component/data]}]
   [:div
-   (map (fn [component]
-        [:div (str (:component/name component))])
-      content)])
+   {:style {:outline "1px solid #333"}}
+   (map (fn [field]
+          [:div
+           (render-component (merge field data))])
+        fields)])
 
 (defmethod render-component :default
   [component]
@@ -45,7 +47,7 @@
          (str head))])
 
 (defmethod render-component :component.type/table
-  [{:keys [:component.table/headers :component.table/data
+  [{:keys [:component.table/headers :component/data
            :component.table/fields]}]
 
   [:table
