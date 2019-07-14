@@ -35,6 +35,12 @@
                    fields)])
    data))
 
+(defn header-cell
+  [head]
+  [:th (if (#{:component.header/empty} head)
+         ""
+         (str head))])
+
 (defmethod render-component :component.type/table
   [{:keys [:component.table/headers :component.table/data
            :component.table/fields]}]
@@ -42,7 +48,7 @@
   [:table
    [:thead
     [:tr
-     (map (fn [head] [:th (str head)]) headers)]]
+     (map header-cell headers)]]
 
    [:tbody
     (table-rows fields data)]])

@@ -110,6 +110,7 @@
       {:component/type  :component.type/text
        :table.field/key :file/size
        :component/name  :component.name/file-size}]}
+
     {:component/name :component.name/files-list
      :component/type :component.type/list
      :list/content   [{:component/type :component.type/image
