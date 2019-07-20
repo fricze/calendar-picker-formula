@@ -51,18 +51,17 @@
   (js/console.warn [:component-type/not-implemented (:component/type component)])
   [:div (js/JSON.stringify (clj->js component))])
 
-(defn table-rows [fields data]
-  (map
-   (fn [row] [:tr
-              (map (fn [field]
-                     (let [path (or (:component.content/path field) identity)]
-                       [:td
-                        (render-component
-                         (merge row field
-                                {:component/content
-                                 (path row)}))]))
-                   fields)])
-   data))
+(defn table-cell [data]
+  (fn [field]
+    (let [path (or (:component.content/path field) identity)]
+      [:td
+       (render-component
+        (merge data field
+               {:component/content
+                (path data)}))])))
+
+(defn table-rows [fields table-data]
+  (map (fn [row] [:tr (map (table-cell row) fields)]) table-data))
 
 (defn header-cell
   [head]
