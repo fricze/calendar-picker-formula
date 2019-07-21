@@ -5,7 +5,7 @@
                               titleStyle]]
    ["./table.js" :refer [tableStyle tableHeader
                          tableHeaderCellStyle tableCellStyle
-                         dayFromCalendar
+                         dayFromCalendar calendarStyle
                          tableRowStyle clientStatus]]
    [app.icons.icon :refer [icon]]))
 
@@ -120,4 +120,9 @@
 
 (defmethod render-component :component.type/calendar
   [{:keys [:component/content]}]
-  [dayFromCalendar {:day 5 :events (clj->js [{:name "Clover Developer Meetup"}])}])
+  [calendarStyle
+   (map
+    (fn []
+      [dayFromCalendar
+       {:day 5 :events (clj->js [{:name "Clover Developer Meetup"}])}])
+    (range 10))])

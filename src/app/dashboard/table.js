@@ -109,6 +109,12 @@ const calendarEventStyle = s.div({
   padding: "10px 8px",
 })
 
+export const calendarStyle = s.div({
+  display: "flex",
+  flexWrap: "wrap",
+  width: "900px",
+})
+
 export const dayFromCalendar = ({ day, events, }) =>
   h(dayFromCalendarStyle, [
     h(dayFromCalendarNumberStyle, [day,]),
