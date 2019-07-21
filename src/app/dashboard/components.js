@@ -40,7 +40,7 @@ const listElementStatusStyle = s.div({
   height: "100%",
   display: "flex",
   alignItems: "center",
-  justifyContent: "center",
+  justifyContent: "flex-start",
 })
 
 const listElementStyle = s.div({
@@ -51,19 +51,29 @@ const listElementStyle = s.div({
   fontSize: "12px",
   fontFamily: "Open Sans Light",
   [`& ${listElementStatusStyle}`]: {
-    width: "40px",
+    width: "20px",
   },
 })
 
 const listStyle = s.div({
+  outline: "1px solid #999",
   width: "362px",
-  outline: "1px solid #333",
   [`& ${listElementStyle}`]: {
     margin: "40px 0",
   },
 })
 
-export const listContent = ({ children, }) => h(listStyle, {}, [children,])
+const listTitleStyle = s.h1({
+  fontSize: "18px",
+  fontFamily: "Open Sans Light",
+  fontWeight: "normal",
+})
+
+export const listContent = ({ children, }) =>
+  h(listStyle, [h(listTitleStyle, {}, "Notifications"), children,])
+
+const statusColor = status =>
+  status === "UNREAD" ? "#495AFF" : status === "READ" ? "#21A5FF" : "#999"
 
 const listElementStatus = ({ status, }) =>
   h(listElementStatusStyle, [
@@ -72,12 +82,7 @@ const listElementStatus = ({ status, }) =>
         width: "10px",
         height: "10px",
         borderRadius: "50%",
-        background:
-          status === "UNREAD"
-            ? "#495AFF"
-            : status === "READ"
-            ? "#21A5FF"
-            : "#999",
+        background: statusColor(status),
       })
     ),
   ])
