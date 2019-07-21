@@ -1,6 +1,6 @@
 (ns app.dashboard.render
   (:require
-   ["./components.js" :refer [dateView dateTimeView]]
+   ["./components.js" :refer [dateView dateTimeView listElement listContent]]
    [hx.react :refer [$]]
    [app.icons.icon :refer [icon]]))
 
@@ -19,7 +19,7 @@
     [:span (str [:content/no-data name])]))
 
 (defmethod render-component :component.type/text
-  [{:keys [:component/content :component/name]}]
+  [{:keys [:component/content :component/name] :as component}]
   (if content
     [:span (str content)]
     [:span (str [:content/no-data name])]))
@@ -32,19 +32,22 @@
   [{:keys [:component/content]}]
   [dateTimeView {:date (js/Date.)}])
 
-(defn list-field [data]
-  (fn [field]
-    (let [path (or (:component.content/path field) identity)]
-      [:div
-       (render-component
-        (assoc field :component/content
-               (path data)))])))
+(defn list-field [fields props-path]
+  (fn [data]
+    [listElement
+     (props-path data)
+     [:<>
+      (map
+       (fn [field]
+         (let [datum ((:component.content/path field) data)]
+           [:div datum]))
+       fields)]]))
 
 (defmethod render-component :component.type/list
-  [{:keys [:component.list/fields :component/data]}]
-  [:div
-   {:style {:outline "1px solid #333"}}
-   (map (list-field data) fields)])
+  [{:keys [:component.list/fields :component/data
+           :component/props-path]}]
+
+  [listContent (map (list-field fields props-path) data)])
 
 (defmethod render-component :default
   [component]
@@ -90,8 +93,8 @@
   [:img {:src ""}])
 
 (defmethod render-component :component.type/title
-  []
-  [:img {:src ""}])
+  [{:keys [:component/content]}]
+  [:p content])
 
 (defmethod render-component :component.type/box
   []

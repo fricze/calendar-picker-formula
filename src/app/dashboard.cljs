@@ -13,25 +13,37 @@
    [:h1
     {:style {:font-family "iA Writer Duo S"
              :font-size   14}}
-    (str "(:components dashboard/clients)")]
+    (str "(:components dashboard/notifications)")]
 
    [:div
     {:style {:font-family "iA Writer Duo S"
              :font-size   14}}
-    (map render-component (:components dashboard/clients))]
+    (map render-component (:components dashboard/notifications))]
 
-   [:div
-    {:style {:height 100}}]
 
-   [:h1
-    {:style {:font-family "iA Writer Duo S"
-             :font-size   14}}
-    (str "(:components dashboard/files)")]
+   ;; [:h1
+   ;;  {:style {:font-family "iA Writer Duo S"
+   ;;           :font-size   14}}
+   ;;  (str "(:components dashboard/clients)")]
 
-   [:div
-    {:style {:font-family "iA Writer Duo S"
-             :font-size   14}}
-    (map render-component (:components dashboard/files))]])
+   ;; [:div
+   ;;  {:style {:font-family "iA Writer Duo S"
+   ;;           :font-size   14}}
+   ;;  (map render-component (:components dashboard/clients))]
+
+   ;; [:div
+   ;;  {:style {:height 100}}]
+
+   ;; [:h1
+   ;;  {:style {:font-family "iA Writer Duo S"
+   ;;           :font-size   14}}
+   ;;  (str "(:components dashboard/files)")]
+
+   ;; [:div
+   ;;  {:style {:font-family "iA Writer Duo S"
+   ;;           :font-size   14}}
+   ;;  (map render-component (:components dashboard/files))]
+   ])
 
 (defn run-app! []
   (react-dom/render

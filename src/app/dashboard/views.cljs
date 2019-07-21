@@ -30,12 +30,26 @@
   {:components
    [{:component/name :component.name/notifications-title
      :component/type :component.type/title}
-    {:component/type :component.type/list
-     :component/name :component.name/notifications-list
+    {:component/type       :component.type/list
+     :component/name       :component.name/notifications-list
+     :component/data
+     (map
+      (fn [i]
+        {:notification/title  "The Quick Brown Fox Jumps"
+         :notification/status (if (even? i) "UNREAD" "READ")})
+      (range 10))
+     :component/props-path #(select-keys % [:notification/status])
+     :component.list/fields
+     [{:component/type         :component.type/text
+       :component.content/path :notification/title
+       :component/name         :component.name/notification-title}
+      #_{:component/type         :component.type/text
+         :component.content/path :notification/status
+         :component/name         :component.name/notification-status}]
      ;; TODO: think about proper type for that field.
      ;; something that have: name, description, status
-     :list/content   [{:component/type :component.type/notification
-                       :component/name :component.name/notification}]}]})
+     :list/content         [{:component/type :component.type/notification
+                             :component/name :component.name/notification}]}]})
 
 (def dashboard
   {:components
