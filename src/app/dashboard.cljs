@@ -9,7 +9,8 @@
             ["react-dom" :as react-dom]))
 
 (defnc Root []
-  [:<>
+  [:div
+   {:style {:marginLeft "35vw"}}
    [:h1
     {:style {:font-family "iA Writer Duo S"
              :font-size   14}}

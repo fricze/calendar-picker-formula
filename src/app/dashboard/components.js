@@ -61,7 +61,7 @@ const listElementStyle = s.div(({ photo, }) => ({
   fontSize: "12px",
   fontFamily: "Open Sans Light",
 
-  gridTemplateColumns: photo ? "20px 40px auto" : "20px auto",
+  gridTemplateColumns: photo ? "20px 40px auto" : "30px auto",
   gridTemplateRows: "20px",
   gridTemplateAreas: photo
     ? `
