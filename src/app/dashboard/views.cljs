@@ -28,25 +28,48 @@
 
 (def notifications
   {:components
-   [{:component/name :component.name/notifications-title
-     :component/type :component.type/title}
+   [{:component/content "Notifications"
+     :component/name    :component.name/notifications-title
+     :component/type    :component.type/title}
     {:component/type       :component.type/list
-     :component/name       :component.name/notifications-list
      :component/data
      (map
       (fn [i]
         {:notification/title  "The Quick Brown Fox Jumps"
          :notification/status (if (even? i) "UNREAD" "READ")})
       (range 10))
-     :component/props-path #(select-keys % [:notification/status])
+     :component/props-path #(clojure.set/rename-keys
+                             (select-keys % [:notification/status])
+                             {:notification/status :status})
      :component.list/fields
-     [{:component/type         :component.type/text
+     [{:component/type         :component.type/title
        :component.content/path :notification/title
-       :component/name         :component.name/notification-title}]
-     ;; TODO: think about proper type for that field.
-     ;; something that have: name, description, status
-     :list/content         [{:component/type :component.type/notification
-                             :component/name :component.name/notification}]}]})
+       :component/name         :component.name/notification-title}]}]})
+
+(def todo
+  {:components
+   [{:component/content "Todo"
+     :component/name    :component.name/todos-title
+     :component/type    :component.type/title}
+    {:component/type       :component.type/list
+     :component/name       :component.name/todos-list
+     :component/data
+     (map
+      (fn [i]
+        {:todo/title   "Today 15:30"
+         :todo/content "Meeting with Sara and Cristiane"
+         :todo/status  (if (even? i) "UNREAD" "READ")})
+      (range 10))
+     :component/props-path #(clojure.set/rename-keys
+                             (select-keys % [:todo/status])
+                             {:todo/status :status})
+     :component.list/fields
+     [{:component/type         :component.type/title
+       :component.content/path :todo/title
+       :component/name         :component.name/todo-title}
+      {:component/type         :component.type/text
+       :component.content/path :todo/content
+       :component/name         :component.name/todo-content}]}]})
 
 (def dashboard
   {:components

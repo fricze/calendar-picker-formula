@@ -43,34 +43,58 @@ const listElementStatusStyle = s.div({
   justifyContent: "flex-start",
 })
 
-const listElementStyle = s.div({
-  display: "flex",
-  flexDirection: "row",
+export const titleStyle = s.h1({
+  fontSize: "18px",
+  fontFamily: "Open Sans Light",
+  margin: 0,
+  fontWeight: "normal",
+})
+
+const textStyle = s.p({ margin: 0, })
+
+export const text = ({ children, }) => h(textStyle, [children,])
+
+const listElementStyle = s.div(({ photo, }) => ({
+  display: "grid",
   background: "#fff",
   height: "40px",
   fontSize: "12px",
   fontFamily: "Open Sans Light",
+
+  gridTemplateColumns: photo ? "20px 40px auto" : "20px auto",
+  gridTemplateRows: "20px",
+  gridTemplateAreas: photo
+    ? `
+    "status photo header"
+    "status photo content"
+  `
+    : `"status header"
+       "status content"
+   `,
   [`& ${listElementStatusStyle}`]: {
-    width: "20px",
+    gridArea: "status",
   },
-})
+
+  [`& ${titleStyle}`]: {
+    gridArea: "header",
+    fontSize: "12px",
+  },
+
+  [`& ${textStyle}`]: {
+    gridArea: "content",
+  },
+}))
 
 const listStyle = s.div({
-  outline: "1px solid #999",
   width: "362px",
+  display: "flex",
+  flexDirection: "column",
   [`& ${listElementStyle}`]: {
-    margin: "40px 0",
+    margin: "20px 0",
   },
 })
 
-const listTitleStyle = s.h1({
-  fontSize: "18px",
-  fontFamily: "Open Sans Light",
-  fontWeight: "normal",
-})
-
-export const listContent = ({ children, }) =>
-  h(listStyle, [h(listTitleStyle, {}, "Notifications"), children,])
+export const listContent = ({ children, }) => h(listStyle, [children,])
 
 const statusColor = status =>
   status === "UNREAD" ? "#495AFF" : status === "READ" ? "#21A5FF" : "#999"
@@ -88,8 +112,10 @@ const listElementStatus = ({ status, }) =>
   ])
 
 export const listElement = props => {
-  const { children, } = props
-  const status = props["notification/status"]
+  const { children, status, photo, } = props
 
-  return h(listElementStyle, [h(listElementStatus, { status, }), children,])
+  return h(listElementStyle, { photo, }, [
+    h(listElementStatus, { status, }),
+    children,
+  ])
 }

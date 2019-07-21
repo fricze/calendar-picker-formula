@@ -21,6 +21,17 @@
     (map render-component (:components dashboard/notifications))]
 
 
+   [:h1
+    {:style {:font-family "iA Writer Duo S"
+             :font-size   14}}
+    (str "(:components dashboard/todo)")]
+
+   [:div
+    {:style {:font-family "iA Writer Duo S"
+             :font-size   14}}
+    (map render-component (:components dashboard/todo))]
+
+
    ;; [:h1
    ;;  {:style {:font-family "iA Writer Duo S"
    ;;           :font-size   14}}
