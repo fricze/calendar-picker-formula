@@ -98,7 +98,7 @@
 
      :component/data
      (map
-      (fn []
+      (fn [status]
         {:client/first-name "John"
          :client/last-name  "Smith"
          :client/e-mail     "johhn@smith.com"
@@ -108,8 +108,8 @@
          :client/address    "Washington St. Hello 45/67"
          :client/state      "Washington"
          :client/country    "United States"
-         :client/status     "no idea"})
-      (range 5))
+         :client/status     status})
+      (flatten (repeat 3 [:done :missed :delayed])))
 
      ;; `{ first_name, last_name, phone, email, position,
      ;; industry, address, state, country, status }`

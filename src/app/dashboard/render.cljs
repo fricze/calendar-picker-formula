@@ -3,6 +3,9 @@
    ["./components.js" :refer [dateView dateTimeView
                               text listElement listContent
                               titleStyle]]
+   ["./table.js" :refer [tableStyle tableHeader
+                         tableHeaderCellStyle tableCellStyle
+                         tableRowStyle clientStatus]]
    [app.icons.icon :refer [icon]]))
 
 (defmulti render-component :component/type)
@@ -16,7 +19,8 @@
 (defmethod render-component :component.type/status
   [{:keys [:component/content :component/name]}]
   (if content
-    [:span (str content)]
+    [clientStatus {:status (cljs.core/name content)}]
+
     [:span (str [:content/no-data name])]))
 
 (defmethod render-component :component.type/text
@@ -58,29 +62,29 @@
 (defn table-cell [data]
   (fn [field]
     (let [path (or (:component.content/path field) identity)]
-      [:td
+      [tableCellStyle
        (render-component
         (merge data field
                {:component/content
                 (path data)}))])))
 
 (defn table-rows [fields table-data]
-  (map (fn [row] [:tr (map (table-cell row) fields)]) table-data))
+  (map (fn [row]
+       [tableRowStyle (map (table-cell row) fields)]) table-data))
 
 (defn header-cell
   [head]
-  [:th (if (#{:component.header/empty} head)
-         ""
-         (str head))])
+  [tableHeaderCellStyle (if (#{:component.header/empty} head)
+                          ""
+                          (str head))])
 
 (defmethod render-component :component.type/table
   [{:keys [:component.table/headers :component/data
            :component.table/fields]}]
 
-  [:table
-   [:thead
-    [:tr
-     (map header-cell headers)]]
+  [tableStyle
+   [tableHeader
+    (map header-cell headers)]
 
    [:tbody
     (table-rows fields data)]])
