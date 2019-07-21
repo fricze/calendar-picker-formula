@@ -13,6 +13,7 @@ export const tableStyle = s.table({
 
 export const tableHeaderCellStyle = s.th({
   padding: "0 20px",
+  height: "50px",
 })
 
 export const tableCellStyle = s.td({
