@@ -37,7 +37,7 @@
       (fn [i]
         {:notification/title  "The Quick Brown Fox Jumps"
          :notification/status (if (even? i) "UNREAD" "READ")})
-      (range 10))
+      (range 5))
      :component/props-path #(clojure.set/rename-keys
                              (select-keys % [:notification/status])
                              {:notification/status :status})
@@ -59,7 +59,7 @@
         {:todo/title   "Today 15:30"
          :todo/content "Meeting with Sara and Cristiane"
          :todo/status  (if (even? i) "UNREAD" "READ")})
-      (range 10))
+      (range 5))
      :component/props-path #(clojure.set/rename-keys
                              (select-keys % [:todo/status])
                              {:todo/status :status})
@@ -109,7 +109,7 @@
          :client/state      "Washington"
          :client/country    "United States"
          :client/status     "no idea"})
-      (range 10))
+      (range 5))
 
      ;; `{ first_name, last_name, phone, email, position,
      ;; industry, address, state, country, status }`
