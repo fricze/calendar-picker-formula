@@ -34,15 +34,26 @@
    ;;  (map render-component (:components dashboard/todo))]
 
 
+   ;; [:h1
+   ;;  {:style {:font-family "iA Writer Duo S"
+   ;;           :font-size   14}}
+   ;;  (str "(:components dashboard/clients)")]
+
+   ;; [:div
+   ;;  {:style {:font-family "iA Writer Duo S"
+   ;;           :font-size   14}}
+   ;;  (map render-component (:components dashboard/clients))]
+
+
    [:h1
     {:style {:font-family "iA Writer Duo S"
              :font-size   14}}
-    (str "(:components dashboard/clients)")]
+    (str "(:components dashboard/calendar)")]
 
    [:div
     {:style {:font-family "iA Writer Duo S"
              :font-size   14}}
-    (map render-component (:components dashboard/clients))]
+    (map render-component (:components dashboard/calendar))]
 
    ;; [:div
    ;;  {:style {:height 100}}]

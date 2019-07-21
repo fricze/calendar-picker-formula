@@ -5,6 +5,7 @@
                               titleStyle]]
    ["./table.js" :refer [tableStyle tableHeader
                          tableHeaderCellStyle tableCellStyle
+                         dayFromCalendar
                          tableRowStyle clientStatus]]
    [app.icons.icon :refer [icon]]))
 
@@ -70,7 +71,7 @@
 
 (defn table-rows [fields table-data]
   (map (fn [row]
-       [tableRowStyle (map (table-cell row) fields)]) table-data))
+         [tableRowStyle (map (table-cell row) fields)]) table-data))
 
 (defn header-cell
   [head]
@@ -116,3 +117,7 @@
 (defmethod render-component :component.type/form
   []
   [:form])
+
+(defmethod render-component :component.type/calendar
+  [{:keys [:component/content]}]
+  [dayFromCalendar {:day 5 :events (clj->js [{:name "Clover Developer Meetup"}])}])

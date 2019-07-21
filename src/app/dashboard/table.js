@@ -88,3 +88,29 @@ export const clientStatus = ({ status, }) => {
     h(clientStatusSymbol, { status, color, }),
   ])
 }
+
+const dayFromCalendarStyle = s.div({
+  width: "160px",
+  borderRight: "1px solid #D3D1D1",
+  height: "110px",
+})
+
+const dayFromCalendarNumberStyle = s.div({
+  height: "22px",
+  fontFamily: "Open Sans SemiBold",
+  fontSize: "16px",
+  background: "#A2D6F8",
+  padding: "0 12px",
+  borderTop: "1px solid #CFE9FA",
+})
+
+const calendarEventStyle = s.div({
+  fontSize: "12px",
+  padding: "10px 8px",
+})
+
+export const dayFromCalendar = ({ day, events, }) =>
+  h(dayFromCalendarStyle, [
+    h(dayFromCalendarNumberStyle, [day,]),
+    events.map(({ name, }) => h(calendarEventStyle, [name,])),
+  ])

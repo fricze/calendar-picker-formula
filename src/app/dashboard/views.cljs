@@ -48,7 +48,7 @@
 
 (def todo
   {:components
-   [{:component/content "Todo"
+   [{:component/content "ToDo"
      :component/name    :component.name/todos-title
      :component/type    :component.type/title}
     {:component/type       :component.type/list
@@ -70,6 +70,11 @@
       {:component/type         :component.type/text
        :component.content/path :todo/content
        :component/name         :component.name/todo-content}]}]})
+
+(def calendar
+  {:components
+   [{:component/name :component.name/calendar
+     :component/type :component.type/calendar}]})
 
 (def dashboard
   {:components
