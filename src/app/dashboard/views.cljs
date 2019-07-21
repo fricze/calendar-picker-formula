@@ -42,10 +42,7 @@
      :component.list/fields
      [{:component/type         :component.type/text
        :component.content/path :notification/title
-       :component/name         :component.name/notification-title}
-      #_{:component/type         :component.type/text
-         :component.content/path :notification/status
-         :component/name         :component.name/notification-status}]
+       :component/name         :component.name/notification-title}]
      ;; TODO: think about proper type for that field.
      ;; something that have: name, description, status
      :list/content         [{:component/type :component.type/notification
