@@ -91,20 +91,23 @@ const getPrevDays = (month, year) =>
     : getDaysInMonthRecursive(month - 1, year)
 
 const getCalendarBlock = ({ month, year, daysPerRow, }) => {
-  const daysCollection = getDaysInMonthRecursive(month, year)
+  const currentMonthDaysCollection = getDaysInMonthRecursive(month, year).map(
+    date => ({ date, current: true, })
+  )
 
   // System boundaries. Make sure to go correctly to next month in following year
-  const nextDaysCollection = getNextDays(month, year)
+  const nextDaysCollection = getNextDays(month, year).map(date => ({ date, }))
   // System boundaries. Make sure to go correctly to previus month in previous year
-  const prevDaysCollection = getPrevDays(month, year)
+  const prevDaysCollection = getPrevDays(month, year).map(date => ({ date, }))
 
-  const firstDay = daysCollection[0]
+  const firstDay = currentMonthDaysCollection[0].date
   const howFarToLeft = firstDay.getDay() % daysPerRow
 
   const lastFromPrevDays = prevDaysCollection.slice(
     Math.max(prevDaysCollection.length - howFarToLeft, 1)
   )
-  const currentWithPrev = lastFromPrevDays.concat(daysCollection)
+
+  const currentWithPrev = lastFromPrevDays.concat(currentMonthDaysCollection)
 
   const rows = Math.ceil(currentWithPrev.length / daysPerRow)
   const shouldHaveCells = rows * daysPerRow

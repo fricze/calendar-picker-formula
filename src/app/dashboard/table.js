@@ -89,11 +89,12 @@ export const clientStatus = ({ status, }) => {
   ])
 }
 
-const dayFromCalendarStyle = s.div({
+const dayFromCalendarStyle = s.div(({ current, }) => ({
   width: "160px",
   borderRight: "1px solid #D3D1D1",
   height: "110px",
-})
+  opacity: current ? 1 : 0.5,
+}))
 
 const dayFromCalendarNumberStyle = s.div({
   height: "22px",
@@ -116,10 +117,10 @@ export const calendarStyle = s.div({
 })
 
 export const dayFromCalendar = ({
-  day,
+  day: { current, date, },
   events = [{ name: "Clover Developer Meetup", },],
 }) =>
-  h(dayFromCalendarStyle, [
-    h(dayFromCalendarNumberStyle, [String(day.getDate()),]),
+  h(dayFromCalendarStyle, { current, key: date.getTime(), }, [
+    h(dayFromCalendarNumberStyle, [String(date.getDate()),]),
     events.map(({ name, }) => h(calendarEventStyle, [name,])),
   ])
