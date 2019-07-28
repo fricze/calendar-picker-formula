@@ -115,7 +115,29 @@ const getCalendarBlock = ({ month, year, daysPerRow, }) => {
   return currentWithPrev.concat(firstFromNextDays)
 }
 
-export const Calendar = ({ daysPerRow = 7, _getCalendarBlock = getCalendarBlock, }) => {
+const dayView = ({ daysPerRow, day, idx, }) => {
+  const column = (idx % daysPerRow) + 1
+
+  return h(
+    "span",
+    {
+      // this key should be unique enough,
+      // timestamp seems to be good identifier for Date
+      key: day.getTime(),
+      style: {
+        gridColumn: column,
+      },
+      className: "day",
+    },
+    day.getDate()
+  )
+}
+
+export const Calendar = ({
+  daysPerRow = 7,
+  _getCalendarBlock = getCalendarBlock,
+  DayView = dayView,
+}) => {
   const { setYear, setMonth, month, year, } = useCalendarState()
 
   const allDaysCollection = _getCalendarBlock({ month, year, daysPerRow, })
@@ -132,26 +154,11 @@ export const Calendar = ({ daysPerRow = 7, _getCalendarBlock = getCalendarBlock,
           className: "grid",
           key: "grid",
           style: {
-            gridTemplateColumns: `repeat(${daysPerRow}, 40px)`,
+            display: "grid",
+            gridTemplateColumns: `repeat(${daysPerRow}, 160px)`,
           },
         },
-        allDaysCollection.map((x, idx) => {
-          const column = (idx % daysPerRow) + 1
-
-          return h(
-            "span",
-            {
-              // this key should be unique enough,
-              // timestamp seems to be good identifier for Date
-              key: x.getTime(),
-              style: {
-                gridColumn: column,
-              },
-              className: "day",
-            },
-            x.getDate()
-          )
-        })
+        allDaysCollection.map((day, idx) => DayView({ daysPerRow, day, idx, }))
       ),
 
       h("input", {

@@ -3,6 +3,7 @@
    ["./components.js" :refer [dateView dateTimeView
                               text listElement listContent
                               titleStyle]]
+   ["../calendar.js" :refer [Calendar]]
    ["./table.js" :refer [tableStyle tableHeader
                          tableHeaderCellStyle tableCellStyle
                          dayFromCalendar calendarStyle
@@ -120,9 +121,13 @@
 
 (defmethod render-component :component.type/calendar
   [{:keys [:component/content]}]
-  [calendarStyle
-   (map
-    (fn []
-      [dayFromCalendar
-       {:day 5 :events (clj->js [{:name "Clover Developer Meetup"}])}])
-    (range 10))])
+
+  [Calendar {:DayView dayFromCalendar}]
+  ;; lovely <3
+
+  #_[calendarStyle
+     (map
+      (fn []
+        [dayFromCalendar
+         {:day 5 :events (clj->js [{:name "Clover Developer Meetup"}])}])
+      (range 10))])

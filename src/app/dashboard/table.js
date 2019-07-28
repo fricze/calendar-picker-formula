@@ -115,8 +115,11 @@ export const calendarStyle = s.div({
   width: "900px",
 })
 
-export const dayFromCalendar = ({ day, events, }) =>
+export const dayFromCalendar = ({
+  day,
+  events = [{ name: "Clover Developer Meetup", },],
+}) =>
   h(dayFromCalendarStyle, [
-    h(dayFromCalendarNumberStyle, [day,]),
+    h(dayFromCalendarNumberStyle, [String(day.getDate()),]),
     events.map(({ name, }) => h(calendarEventStyle, [name,])),
   ])
