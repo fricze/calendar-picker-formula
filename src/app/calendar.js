@@ -1,6 +1,9 @@
 import ReactDOM, { render, } from "react-dom"
 import h from "react-hyperscript"
 import React, { useState, } from "react"
+import styled from "styled-components"
+
+const s = styled.default
 
 export function getDaysInMonthRecursive(
   month,
@@ -43,12 +46,30 @@ const weekDays = [
   "Thursday",
   "Friday",
   "Saturday",
-].map(d => d.slice(0, 3))
+] // .map(d => d.slice(0, 3))
 
-const element = h(
-  "div",
+const weekdayStyled = s.div({
+  background: "#0E57B8",
+  width: "160px",
+  flexShrink: 0,
+  borderRight: "1px solid #D3D1D1",
+  textTransform: "uppercase",
+  height: 38,
+  lineHeight: 2.6,
+  paddingLeft: 34,
+  color: "#fff",
+})
+
+const weekdaysStyled = s.div({
+  display: "flex",
+})
+
+const weekDaysView = h(
+  weekdaysStyled,
   { className: "weekdays", key: "weekdays", },
-  weekDays.map(name => h("div", { key: name, className: "weekday", }, name))
+  weekDays.map(name =>
+    h(weekdayStyled, { key: name, className: "weekday", }, name)
+  )
 )
 
 const useValue = handler => e => handler(e.target.value)
@@ -149,7 +170,7 @@ export const Calendar = ({
     "div",
     { className: "box", },
     h("div", [
-      element,
+      weekDaysView,
 
       h(
         "div",

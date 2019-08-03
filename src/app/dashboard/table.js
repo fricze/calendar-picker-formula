@@ -89,13 +89,6 @@ export const clientStatus = ({ status, }) => {
   ])
 }
 
-const dayFromCalendarStyle = s.div(({ current, }) => ({
-  width: "160px",
-  borderRight: "1px solid #D3D1D1",
-  height: "110px",
-  opacity: current ? 1 : 0.6,
-}))
-
 const dayFromCalendarNumberStyle = s.div({
   height: "22px",
   fontFamily: "Open Sans SemiBold",
@@ -104,6 +97,16 @@ const dayFromCalendarNumberStyle = s.div({
   padding: "0 12px",
   borderTop: "1px solid #CFE9FA",
 })
+
+const dayFromCalendarStyle = s.div(({ current, }) => ({
+  width: "160px",
+  borderRight: "1px solid #D3D1D1",
+  height: "110px",
+  opacity: current ? 1 : 0.6,
+  [`& ${dayFromCalendarNumberStyle}`]: {
+    color: current ? "#000" : "#FFF",
+  },
+}))
 
 const calendarEventStyle = s.div({
   fontSize: "12px",
