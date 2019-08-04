@@ -195,12 +195,14 @@ const dayView = ({ daysPerRow, day, idx, }) => {
 const eventsStyled = s.h1({
   fontFamily: "Open Sans SemiBold",
   fontSize: 24,
+  textAlign: "center",
 })
 
 const changeMonthStyled = s.a({
   fontFamily: "Open Sans",
   fontSize: 21,
   cursor: "pointer",
+  userSelect: "none",
 })
 
 export const monthControlStyled = s.div({
