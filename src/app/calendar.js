@@ -46,7 +46,7 @@ const weekDays = [
   "Thursday",
   "Friday",
   "Saturday",
-] // .map(d => d.slice(0, 3))
+]
 
 const weekdayStyled = s.div({
   background: "#0E57B8",
@@ -207,6 +207,7 @@ export const monthControlStyled = s.div({
   display: "flex",
   flexDirection: "row",
   justifyContent: "space-between",
+  margin: "12px 0",
 })
 
 export const Calendar = ({
