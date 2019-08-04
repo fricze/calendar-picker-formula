@@ -74,21 +74,33 @@ const weekDaysView = h(
 
 const useValue = handler => e => handler(e.target.value)
 
-const useCalendarState = () => {
-  const [[month, year,], setMonthYear,] = useState([4, 2027,])
-
+const displayDate = ({ year, month, }) => {
   const date = new Date(year, month)
   const monthName = date.toLocaleDateString("en-US", { month: "long", })
   const yearName = date.toLocaleDateString("en-US", { year: "numeric", })
 
-  // System boundaries. Allow only numbers between 0 and 11
-  const setMonth = value => {
-    const monthNumber = Number(value)
-    const newMonthValue =
-      monthNumber > 11 ? 11 : monthNumber < 0 ? 0 : monthNumber
+  const nextMonthDate =
+    month === 11 ? new Date(year + 1, 0) : new Date(year, month + 1)
+  const prevMonthDate =
+    month === 0 ? new Date(year - 1, 11) : new Date(year, month - 1)
 
-    return setMonthYear([newMonthValue, year,])
-  }
+  const nextMonthName = nextMonthDate.toLocaleDateString("en-US", {
+    month: "long",
+  })
+  const prevMonthName = prevMonthDate.toLocaleDateString("en-US", {
+    month: "long",
+  })
+
+  return { monthName, yearName, nextMonthName, prevMonthName, }
+}
+
+const useCalendarState = () => {
+  const [[month, year,], setMonthYear,] = useState([4, 2027,])
+
+  const { monthName, yearName, nextMonthName, prevMonthName, } = displayDate({
+    year,
+    month,
+  })
 
   const setNextMonth = () => {
     switch (month) {
@@ -110,23 +122,20 @@ const useCalendarState = () => {
     }
   }
 
-  // System boundaries. Set year number
-  const setYear = value => {
-    const yearNumber = Number(value)
-    const newYearValue = yearNumber < 1990 ? 1990 : yearNumber
-
-    return setMonthYear([month, newYearValue,])
-  }
-
   return {
-    setYear,
+    // setYear,
 
-    setMonth,
+    // setMonth,
     setNextMonth,
     setPrevMonth,
 
     month,
     year,
+
+    monthName,
+    yearName,
+    nextMonthName,
+    prevMonthName,
   }
 }
 
@@ -198,16 +207,16 @@ export const Calendar = ({
   DayView = dayView,
 }) => {
   const {
-    setYear,
-    setMonth,
     month,
     year,
 
     setPrevMonth,
     setNextMonth,
 
-    setPrevYear,
-    setNextYear,
+    monthName,
+    yearName,
+    nextMonthName,
+    prevMonthName,
   } = useCalendarState()
 
   const allDaysCollection = _getCalendarBlock({ month, year, daysPerRow, })
@@ -220,7 +229,7 @@ export const Calendar = ({
           key: "prevMonth",
           onClick: setPrevMonth,
         },
-        "prev month"
+        [prevMonthName,]
       ),
 
       h(
@@ -229,7 +238,7 @@ export const Calendar = ({
           key: "nextMonth",
           onClick: setNextMonth,
         },
-        "next month"
+        [nextMonthName,]
       ),
     ])
 
@@ -237,21 +246,8 @@ export const Calendar = ({
     "div",
     { className: "box", },
     h("div", [
-      h("input", {
-        key: "month-input",
-        type: "number",
-        value: month,
-        // System boundaries.
-        onChange: useValue(setMonth),
-      }),
-
-      h("input", {
-        key: "year-input",
-        type: "number",
-        value: year,
-        // System boundaries.
-        onChange: useValue(setYear),
-      }),
+      h("div", [String(month + 1),]),
+      h("div", [year,]),
 
       h(buttons),
 
