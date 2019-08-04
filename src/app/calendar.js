@@ -77,6 +77,10 @@ const useValue = handler => e => handler(e.target.value)
 const useCalendarState = () => {
   const [[month, year,], setMonthYear,] = useState([4, 2027,])
 
+  const date = new Date(year, month)
+  const monthName = date.toLocaleDateString("en-US", { month: "long", })
+  const yearName = date.toLocaleDateString("en-US", { year: "numeric", })
+
   // System boundaries. Allow only numbers between 0 and 11
   const setMonth = value => {
     const monthNumber = Number(value)
@@ -85,6 +89,27 @@ const useCalendarState = () => {
 
     return setMonthYear([newMonthValue, year,])
   }
+
+  const setNextMonth = () => {
+    switch (month) {
+      case 11:
+        setMonthYear([0, year + 1,])
+        break
+      default:
+        setMonthYear([month + 1, year,])
+    }
+  }
+
+  const setPrevMonth = () => {
+    switch (month) {
+      case 0:
+        setMonthYear([11, year - 1,])
+        break
+      default:
+        setMonthYear([month - 1, year,])
+    }
+  }
+
   // System boundaries. Set year number
   const setYear = value => {
     const yearNumber = Number(value)
@@ -95,7 +120,11 @@ const useCalendarState = () => {
 
   return {
     setYear,
+
     setMonth,
+    setNextMonth,
+    setPrevMonth,
+
     month,
     year,
   }
@@ -117,9 +146,15 @@ const getCalendarBlock = ({ month, year, daysPerRow, }) => {
   )
 
   // System boundaries. Make sure to go correctly to next month in following year
-  const nextDaysCollection = getNextDays(month, year).map(date => ({ date, }))
+  const nextDaysCollection = getNextDays(month, year).map(date => ({
+    date,
+    nextMonth: true,
+  }))
   // System boundaries. Make sure to go correctly to previus month in previous year
-  const prevDaysCollection = getPrevDays(month, year).map(date => ({ date, }))
+  const prevDaysCollection = getPrevDays(month, year).map(date => ({
+    date,
+    prevMonth: true,
+  }))
 
   const firstDay = currentMonthDaysCollection[0].date
   const howFarToLeft = firstDay.getDay() % daysPerRow
@@ -162,29 +197,46 @@ export const Calendar = ({
   _getCalendarBlock = getCalendarBlock,
   DayView = dayView,
 }) => {
-  const { setYear, setMonth, month, year, } = useCalendarState()
+  const {
+    setYear,
+    setMonth,
+    month,
+    year,
+
+    setPrevMonth,
+    setNextMonth,
+
+    setPrevYear,
+    setNextYear,
+  } = useCalendarState()
 
   const allDaysCollection = _getCalendarBlock({ month, year, daysPerRow, })
+
+  const buttons = () =>
+    h([
+      h(
+        "button",
+        {
+          key: "prevMonth",
+          onClick: setPrevMonth,
+        },
+        "prev month"
+      ),
+
+      h(
+        "button",
+        {
+          key: "nextMonth",
+          onClick: setNextMonth,
+        },
+        "next month"
+      ),
+    ])
 
   return h(
     "div",
     { className: "box", },
     h("div", [
-      weekDaysView,
-
-      h(
-        "div",
-        {
-          className: "grid",
-          key: "grid",
-          style: {
-            display: "grid",
-            gridTemplateColumns: `repeat(${daysPerRow}, 160px)`,
-          },
-        },
-        allDaysCollection.map((day, idx) => DayView({ daysPerRow, day, idx, }))
-      ),
-
       h("input", {
         key: "month-input",
         type: "number",
@@ -200,6 +252,23 @@ export const Calendar = ({
         // System boundaries.
         onChange: useValue(setYear),
       }),
+
+      h(buttons),
+
+      weekDaysView,
+
+      h(
+        "div",
+        {
+          className: "grid",
+          key: "grid",
+          style: {
+            display: "grid",
+            gridTemplateColumns: `repeat(${daysPerRow}, 160px)`,
+          },
+        },
+        allDaysCollection.map((day, idx) => DayView({ daysPerRow, day, idx, }))
+      ),
     ])
   )
 }

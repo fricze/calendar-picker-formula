@@ -98,13 +98,13 @@ const dayFromCalendarNumberStyle = s.div({
   borderTop: "1px solid #CFE9FA",
 })
 
-const dayFromCalendarStyle = s.div(({ current, }) => ({
+const dayFromCalendarStyle = s.div(({ current, prevMonth, }) => ({
   width: "160px",
   borderRight: "1px solid #D3D1D1",
   height: "110px",
   opacity: current ? 1 : 0.6,
   [`& ${dayFromCalendarNumberStyle}`]: {
-    color: current ? "#000" : "#FFF",
+    color: prevMonth ? "#FFF" : "#000",
   },
 }))
 
@@ -120,10 +120,10 @@ export const calendarStyle = s.div({
 })
 
 export const dayFromCalendar = ({
-  day: { current, date, },
+  day: { current, date, prevMonth, },
   events = [{ name: "Clover Developer Meetup", },],
 }) =>
-  h(dayFromCalendarStyle, { current, key: date.getTime(), }, [
+  h(dayFromCalendarStyle, { prevMonth, current, key: date.getTime(), }, [
     h(dayFromCalendarNumberStyle, [String(date.getDate()),]),
     events.map(({ name, }) => h(calendarEventStyle, [name,])),
   ])
