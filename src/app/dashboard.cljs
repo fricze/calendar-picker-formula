@@ -46,12 +46,12 @@
 
 
    [:h1
-    {:style {:font-family "iA Writer Duo S"
+    {:style {:font-family "Open Sans SemiBold"
              :font-size   14}}
     (str "(:components dashboard/calendar)")]
 
    [:div
-    {:style {:font-family "iA Writer Duo S"
+    {:style {:font-family "Open Sans SemiBold"
              :font-size   14}}
     (map render-component (:components dashboard/calendar))]
 

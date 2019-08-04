@@ -99,7 +99,6 @@ const dayFromCalendarNumberStyle = s.div({
 })
 
 const dayFromCalendarStyle = s.div(({ current, prevMonth, }) => ({
-  width: "160px",
   borderRight: "1px solid #D3D1D1",
   height: "110px",
   opacity: current ? 1 : 0.6,

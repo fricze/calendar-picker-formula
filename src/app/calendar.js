@@ -50,7 +50,6 @@ const weekDays = [
 
 const weekdayStyled = s.div({
   background: "#0E57B8",
-  width: "160px",
   flexShrink: 0,
   borderRight: "1px solid #D3D1D1",
   textTransform: "uppercase",
@@ -63,14 +62,6 @@ const weekdayStyled = s.div({
 const weekdaysStyled = s.div({
   display: "flex",
 })
-
-const weekDaysView = h(
-  weekdaysStyled,
-  { className: "weekdays", key: "weekdays", },
-  weekDays.map(name =>
-    h(weekdayStyled, { key: name, className: "weekday", }, name)
-  )
-)
 
 const useValue = handler => e => handler(e.target.value)
 
@@ -201,6 +192,23 @@ const dayView = ({ daysPerRow, day, idx, }) => {
   )
 }
 
+const eventsStyled = s.h1({
+  fontFamily: "Open Sans SemiBold",
+  fontSize: 24,
+})
+
+const changeMonthStyled = s.a({
+  fontFamily: "Open Sans",
+  fontSize: 21,
+  cursor: "pointer",
+})
+
+export const monthControlStyled = s.div({
+  display: "flex",
+  flexDirection: "row",
+  justifyContent: "space-between",
+})
+
 export const Calendar = ({
   daysPerRow = 7,
   _getCalendarBlock = getCalendarBlock,
@@ -222,23 +230,23 @@ export const Calendar = ({
   const allDaysCollection = _getCalendarBlock({ month, year, daysPerRow, })
 
   const buttons = () =>
-    h([
+    h(monthControlStyled, [
       h(
-        "button",
+        changeMonthStyled,
         {
           key: "prevMonth",
           onClick: setPrevMonth,
         },
-        [prevMonthName,]
+        ["<< " + prevMonthName,]
       ),
 
       h(
-        "button",
+        changeMonthStyled,
         {
           key: "nextMonth",
           onClick: setNextMonth,
         },
-        [nextMonthName,]
+        [nextMonthName + " >>",]
       ),
     ])
 
@@ -246,12 +254,9 @@ export const Calendar = ({
     "div",
     { className: "box", },
     h("div", [
-      h("div", [String(month + 1),]),
-      h("div", [year,]),
+      h(eventsStyled, ["Events for " + monthName + " " + year,]),
 
       h(buttons),
-
-      weekDaysView,
 
       h(
         "div",
@@ -260,10 +265,19 @@ export const Calendar = ({
           key: "grid",
           style: {
             display: "grid",
-            gridTemplateColumns: `repeat(${daysPerRow}, 160px)`,
+            gridTemplateColumns: `repeat(${daysPerRow}, 1fr)`,
           },
         },
-        allDaysCollection.map((day, idx) => DayView({ daysPerRow, day, idx, }))
+
+        weekDays
+          .map(name =>
+            h(weekdayStyled, { key: name, className: "weekday", }, name)
+          )
+          .concat(
+            allDaysCollection.map((day, idx) =>
+              DayView({ daysPerRow, day, idx, })
+            )
+          )
       ),
     ])
   )
