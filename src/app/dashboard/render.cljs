@@ -43,10 +43,11 @@
   (fn [data]
     [listElement
      (props-path data)
+
      (map
       (fn [field]
         (let [datum (assoc field :component/content
-                           ((:component.content/path field) data))]
+                           (or ((:component.content/path field) data) nil))]
           (render-component datum)))
       fields)]))
 
@@ -93,7 +94,9 @@
 
 (defmethod render-component :component.type/icon
   [{:keys [:component/content]}]
-  [:span [(icon content)]])
+  (if content
+    [:span [(icon content)]]
+    [:span "no-icon"]))
 
 (defmethod render-component :component.type/image
   []
@@ -108,8 +111,8 @@
   [:img {:src ""}])
 
 (defmethod render-component :component.type/text-button
-  [{:keys [:component/name]}]
-  [:button (str name)])
+  [{:keys [:component/content]}]
+  [:button (str content)])
 
 (defmethod render-component :component.type/icon-button
   [{:keys [:component/name]}]

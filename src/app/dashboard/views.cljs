@@ -173,6 +173,7 @@
          :file/link-to       "Metro Berlin Map.pdf"
          :file/extension     icon})
       [:pdf :ms-word :ms-publisher :text :zip])
+     :component/props-path    (fn [] {})
      :component.table/fields
      [{:component/type         :component.type/icon
        :component.content/path :file/extension
@@ -187,13 +188,14 @@
        :component.content/path :file/size
        :component/name         :component.name/file-size}]}
 
-    {:component/name :component.name/file-details
-     :component/type :component.type/list
-     :component/data {:file/size          "250 KB"
-                      :file/modified-date (js/Date.)
-                      :file/name          "Metro Berlin Map"
-                      :file/link-to       "Metro Berlin Map.pdf"
-                      :file/extension     :pdf}
+    {:component/name       :component.name/file-details
+     :component/type       :component.type/list
+     :component/data       {:file/size          "250 KB"
+                            :file/modified-date (js/Date.)
+                            :file/name          "Metro Berlin Map"
+                            :file/link-to       "Metro Berlin Map.pdf"
+                            :file/extension     :pdf}
+     :component/props-path (fn [] {})
      :component.list/fields
      [{:component/type         :component.type/icon
        :component.content/path :file/extension
@@ -205,15 +207,17 @@
        :component.content/path :file/link-to
        :component/name         :component.name/file-name}
       {:component/type :component.type/text-button
+       :component.content/path :file/link-to
        :component/name :component.name/download}]}
 
-    {:component/name :component.name/file-details
-     :component/type :component.type/list
-     :component/data {:file/size          "250 KB"
-                      :file/modified-date (js/Date.)
-                      :file/name          "Metro Berlin Map"
-                      :file/link-to       "Metro Berlin Map.pdf"
-                      :file/extension     :pdf}
+    {:component/name       :component.name/file-details
+     :component/type       :component.type/list
+     :component/data       {:file/size          "250 KB"
+                            :file/modified-date (js/Date.)
+                            :file/name          "Metro Berlin Map"
+                            :file/link-to       "Metro Berlin Map.pdf"
+                            :file/extension     :pdf}
+     :component/props-path (fn [] {})
      :component.list/fields
      [{:component/type         :component.type/icon
        :component.content/path :file/extension
@@ -227,19 +231,26 @@
       {:component/type         :component.type/date-time
        :component.content/path :file/modified-date
        :component/name         :component.name/modified-date-time}
+      {:component/type         :component.type/text-button
+       :component.content/path (fn [] "Share")
+       :component/name         :component.name/share}
       {:component/type :component.type/text-button
-       :component/name :component.name/share}
-      {:component/type :component.type/text-button
+       :component.content/path (fn [] "Fill sign")
        :component/name :component.name/fill-sign}
       {:component/type :component.type/text-button
+       :component.content/path (fn [] "Rename")
        :component/name :component.name/rename}
       {:component/type :component.type/text-button
+       :component.content/path (fn [] "Move")
        :component/name :component.name/move}
       {:component/type :component.type/text-button
+       :component.content/path (fn [] "")
        :component/name :component.name/download}
       {:component/type :component.type/text-button
+       :component.content/path (fn [] "")
        :component/name :component.name/delete}
       {:component/type :component.type/icon-button
+       :component.content/path (fn [] "")
        :component/name :component.name/add}]}]})
 
 (def dashboard-app {})
