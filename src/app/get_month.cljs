@@ -57,27 +57,30 @@ require number of days to right and left")
 
     current-month-days))
 
+(defn get-days-in-next-month [month year]
+  (let [last-day  (.getDay (last current-month-days))
+        days-next (days-to-end-of-month last-day)
+
+        {next-month :month
+         next-year  :year} (get-next-month {:month month :year year})]
+    (map (fn [day] (js/Date. next-year next-month day))
+       (range 1 (inc days-next)))))
+
+(defn get-days-in-prev-month [month year]
+  (let [first-day          (.getDay (first current-month-days))
+        days-prev          (days-to-start-of-month first-day)
+        {prev-month :month
+         prev-year  :year} (get-prev-month {:month month :year year})
+        days-in-prev-month (inc (nth days-in-month prev-month))]
+    (map (fn [day] (js/Date. prev-year prev-month day))
+       (range (- days-in-prev-month days-prev)
+              days-in-prev-month))))
+
 (defn get-days-in-month [month year]
   (let [days               (range 1 (inc (nth days-in-month month)))
         current-month-days (map (fn [day] (js/Date. year month day)) days)
-
-        first-day (.getDay (first current-month-days))
-        last-day  (.getDay (last current-month-days))
-
-        days-prev (days-to-start-of-month first-day)
-        days-next (days-to-end-of-month last-day)
-
-        {prev-month :month
-         prev-year  :year} (get-prev-month {:month month :year year})
-        days-in-prev-month (inc (nth days-in-month prev-month))
-        prev-month-days    (map (fn [day] (js/Date. prev-year prev-month day))
-                              (range (- days-in-prev-month days-prev)
-                                     days-in-prev-month))
-
-        {next-month :month
-         next-year  :year} (get-next-month {:month month :year year})
-        next-month-days    (map (fn [day] (js/Date. next-year next-month day))
-                              (range 1 (inc days-next)))]
+        prev-month-days (get-days-in-prev-month month year)
+        next-month-days (get-days-in-next-month month-year)]
 
     (concat prev-month-days current-month-days next-month-days)))
 
