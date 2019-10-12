@@ -86,7 +86,6 @@
                                      new-col   (- 30 (int diff))
                                      real-diff (js/Math.abs (- (js/Math.floor diff) diff))]
 
-
                                  (set-diff real-diff)
                                  (set-show-col (inc new-col))
 

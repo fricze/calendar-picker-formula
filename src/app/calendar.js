@@ -39,13 +39,13 @@ function getDaysInMonth(month, year) {
 }
 
 const weekDays = [
-  "Sunday",
   "Monday",
   "Tuesday",
   "Wednesday",
   "Thursday",
   "Friday",
   "Saturday",
+  "Sunday",
 ]
 
 const weekdayStyled = s.div({
@@ -86,7 +86,7 @@ const displayDate = ({ year, month, }) => {
 }
 
 const useCalendarState = () => {
-  const [[month, year,], setMonthYear,] = useState([4, 2027,])
+  const [[month, year,], setMonthYear,] = useState([9, 2019,])
 
   const { monthName, yearName, nextMonthName, prevMonthName, } = displayDate({
     year,

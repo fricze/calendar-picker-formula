@@ -11,7 +11,7 @@
             ["./calendar.js" :refer [getDaysInMonthRecursive Calendar]]
             [app.dashboard :as dash]
             [app.calendar-view :refer [calendar-view]]
-            [app.get-month :refer [get-days-in-month-loop-3]]))
+            ))
 
 (devtools/install!)
 
@@ -32,8 +32,25 @@
  (make-counter-3!)
  )
 
+(defn spy [x]
+  (js/console.log x)
+  x)
+
+(defn get-calendar-block [props]
+  (clj->js (calendar-view
+            (-> props
+               (spy)
+                js->clj
+                clojure.walk/keywordize-keys
+                (clojure.set/rename-keys
+                 {:daysPerRow :days-per-row})))))
+
+(def root (h Calendar #js {:_getCalendarBlock get-calendar-block}))
+
+
 (defn main! []
-  (dash/run-app!)
+  (render root (js/document.getElementById "root"))
+  #_(dash/run-app!)
 
   ;; maybe move somwhere like 'run'
   #_(stylefy/init)
@@ -41,7 +58,8 @@
   (println "[main]: loading"))
 
 (defn reload! []
+  (render root (js/document.getElementById "root"))
 
-  (dash/run-app!)
+ #_(dash/run-app!)
   #_(println "[main] reloaded lib:" lib/c lib/d)
   #_(println "[main] reloaded:" a b))
