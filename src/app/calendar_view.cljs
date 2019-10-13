@@ -47,4 +47,4 @@
    :component/props-path #(select-keys % [:calendar/month-days
                                           :calendar/active-month
                                           :calendar/active-year])
-   :component/children   [next-month prev-month month]})
+   :component/children   [prev-month next-month month]})

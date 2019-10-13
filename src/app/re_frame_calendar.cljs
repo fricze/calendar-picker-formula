@@ -21,14 +21,15 @@
      (->> children
           (map #(update % :component/props merge component-props))
           (map (fn [c]
-               [render-component c])))]))
+                 [render-component c])))]))
 
 (defmethod render-component :component.type/button
   [{:keys [:component/props-path :component/props :component/action]}]
 
   (let [component-props (props-path props)]
-    [:div
-     {:on-click #(rf/dispatch [action])}
+    [:button
+     {:style    style/button
+      :on-click #(rf/dispatch [action])}
      (str (:button/name component-props))]))
 
 (defmethod render-component :component.type/month
@@ -42,7 +43,7 @@
      (->> month-days
           (map #(month-day-component %))
           (map (fn [day]
-               [render-component day])))]))
+                 [render-component day])))]))
 
 (defn month-day-view [props]
   (let [{:keys [:day/date]} props]
@@ -64,8 +65,6 @@
    {:key name}
    (js/JSON.stringify (clj->js component))])
 
-
-
 (rf/reg-event-db
  :initialize
  (fn [_ _]
@@ -86,14 +85,12 @@
  (fn [db _]
    (get-in db [:calendar :calendar/month-days])))
 
-
 (defn ui
   []
   (let [month-days @(rf/subscribe [:calendar/month-days])]
     (render-component
      (update cv/calendar :component/props
              merge {:calendar/month-days month-days}))))
-
 
 (defn render
   []

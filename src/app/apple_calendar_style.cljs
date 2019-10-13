@@ -17,3 +17,10 @@
    :box-shadow     "0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)"
    :flex-wrap      :wrap
    :width          500})
+
+(def button
+  {:background :#000
+   :color      :#fff
+   :font-size  16
+   :padding    10
+   :border     "1px solid #333"})
