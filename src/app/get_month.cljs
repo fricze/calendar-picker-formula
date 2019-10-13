@@ -17,23 +17,24 @@ require number of days to right and left")
         (recur (inc day) (conj days date))
         days))))
 
-(defn get-prev-month [{:keys [month year]}]
+(defn dec-month [{:keys [month year]}]
   (if (= month 0)
     {:month 11 :year (dec year)}
     {:month (dec month) :year year}))
 
-(defn get-next-month [{:keys [month year]}]
+(defn inc-month [{:keys [month year]}]
   (if (= month 11)
     {:month 0 :year (inc year)}
     {:month (inc month) :year year}))
 
-(def days-in-month
-  [31 28 31 30 31 30 31 31 30 31 30 31])
+(def month->days-no
+  [31 28 31 30 31 30
+   31 31 30 31 30 31])
 
 (def days-no {:monday 1 :tuesday 2 :wednesday 3
               :thursday 4 :friday 5 :saturday 6 :sunday 0})
 
-(def days-to-end-of-month
+(def days-to-end-of-week
   {1 6
    2 5
    3 4
@@ -42,7 +43,7 @@ require number of days to right and left")
    6 1
    0 0})
 
-(def days-to-start-of-month
+(def days-to-start-of-week
   {1 0
    2 1
    3 2
@@ -51,36 +52,35 @@ require number of days to right and left")
    6 5
    0 6})
 
-#_(defn -get-days-in-month [month year]
-    (let [days               (range 1 (inc (nth days-in-month month)))
-          current-month-days (map (fn [day] (js/Date. year month day)) days)]
-      current-month-days))
+(defn get-days-from-next-month [date last-day]
+  (let [days-next            (days-to-end-of-week last-day)
+        {:keys [month year]} (inc-month date)
 
-(defn get-days-in-next-month [month year last-day]
-  (let [days-next            (days-to-end-of-month last-day)
-        {:keys [month year]} (get-next-month {:month month :year year})]
-    (map #(js/Date. year month %)
-       (range 1 (inc days-next)))))
+        last-in-month  (inc days-next)
+        first-in-month 1]
 
-(defn get-days-in-prev-month [month year first-day]
-  (let [days-prev            (days-to-start-of-month first-day)
-        {:keys [month year]} (get-prev-month {:month month :year year})
-        days-in-prev-month   (inc (nth days-in-month month))]
     (map #(js/Date. year month %)
-       (range (- days-in-prev-month days-prev)
-              days-in-prev-month))))
+         (range first-in-month last-in-month))))
+
+(defn get-days-from-prev-month [date first-day]
+  (let [days-prev            (days-to-start-of-week first-day)
+        {:keys [month year]} (dec-month date)
+
+        last-in-month  (inc (month->days-no month))
+        first-in-month (- last-in-month days-prev)]
+
+    (map #(js/Date. year month %)
+         (range first-in-month last-in-month))))
 
 (defn get-days-in-month [{:keys [month year] :as date}]
-  (let [days               (range 1 (inc (nth days-in-month month)))
-        current-month-days (map (fn [day] (js/Date. year month day)) days)
+  (let [days               (range 1 (inc (month->days-no month)))
+        current-month-days (map #(js/Date. year month %) days)
 
-        prev-month-days    (get-days-in-prev-month
-                            month year
-                            (-> current-month-days first .getDay))
+        prev-month-days (get-days-from-prev-month
+                         date (-> current-month-days first .getDay))
 
-        next-month-days    (get-days-in-next-month
-                            month year
-                            (-> current-month-days last .getDay))]
+        next-month-days (get-days-from-next-month
+                         date (-> current-month-days last .getDay))]
 
     (concat prev-month-days current-month-days next-month-days)))
 
