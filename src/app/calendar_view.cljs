@@ -1,5 +1,38 @@
 (ns app.calendar-view
   (:require [app.get-month :refer [get-days-in-month]]))
 
-(defn calendar-view [{:keys [month year] :as date}]
-  (get-days-in-month date))
+(def month-day
+  {:component/name :component.name/month-day
+   :component/type :component.type/box
+
+   :component/props-path #(select-keys % [:day/no])})
+
+(def month
+  {:component/name :component.name/month
+   :component/type :component.type/list
+
+   :component/props-path #(select-keys % [:month/days])
+   :component/children [month-day]})
+
+(def prev-month
+  {:component/name       :component.name/prev-month
+   :component/type       :component.type/button
+   :component/props-path #(select-keys % [:button/name])
+   :component/props      {:button/name "prev"}
+   :component/action     :calendar.action/prev-month})
+
+(def next-month
+  {:component/name       :component.name/next-month
+   :component/type       :component.type/button
+   :component/props-path #(select-keys % [:button/name])
+   :component/props      {:button/name "next"}
+   :component/action     :calendar.action/next-month})
+
+(def calendar
+  {:component/name :component.name/calendar
+   :component/type :component.type/calendar
+
+   :component/props-path #(select-keys % [:calendar/active-month-days
+                                          :calendar/active-month
+                                          :calendar/active-year])
+   :component/children   [next-month prev-month month]})
