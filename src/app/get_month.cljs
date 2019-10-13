@@ -57,8 +57,8 @@ require number of days to right and left")
    6 5
    0 6})
 
-(defn get-days-from-next-month [date last-day]
-  (let [days-length          (days-to-end-of-week last-day)
+(defn get-days-from-next-month [date bound-day]
+  (let [days-length          (days-to-end-of-week bound-day)
         {:keys [month year]} (inc-month date)
 
         last-in-month  (inc days-length)
@@ -68,8 +68,8 @@ require number of days to right and left")
 
     (map #(js/Date. year month %) days)))
 
-(defn get-days-from-prev-month [date first-day]
-  (let [days-length          (days-to-start-of-week first-day)
+(defn get-days-from-prev-month [date bound-day]
+  (let [days-length          (days-to-start-of-week bound-day)
         {:keys [month year]} (dec-month date)
 
         last-in-month  (inc (month->days-no month))
