@@ -15,8 +15,7 @@
    :flex-direction :row
    :margin         "0 auto"
    :box-shadow     "0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)"
-   :flex-wrap      :wrap
-   :width          500})
+   :flex-wrap      :wrap})
 
 (def button
   {:background :#000
@@ -24,3 +23,12 @@
    :font-size  16
    :padding    10
    :border     "1px solid #333"})
+
+(def calendar
+  {:width  500
+   :margin "0 auto"})
+
+(def box
+  {:display        :flex
+   :flex-direction :row
+   :margin         "1rem 0"})
