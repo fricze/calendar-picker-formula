@@ -126,12 +126,8 @@
   []
   (let [month (month/get-days-in-month {:year 2019 :month 9})]
     (render-component
-     (update cv/calendar :component/props merge {:calendar/active-month-days month})))
-
-  #_[:div
-     [:h1 "Hello world, it is now"]
-     [clock]
-     [color-input]])
+     (update cv/calendar :component/props
+             merge {:calendar/active-month-days month}))))
 
 ;; -- Entry Point -------------------------------------------------------------
 
