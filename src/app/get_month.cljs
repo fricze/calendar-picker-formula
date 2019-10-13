@@ -33,11 +33,14 @@ require number of days to right and left")
   :ret ::date)
 
 (def month->days-no
-  [31 28 31 30 31 30
-   31 31 30 31 30 31])
+  [31 28 31
+   30 31 30
+   31 31 30
+   31 30 31])
 
-(def days-no {:monday 1 :tuesday 2 :wednesday 3
-              :thursday 4 :friday 5 :saturday 6 :sunday 0})
+(def days-no {:monday   1 :tuesday 2 :wednesday 3
+              :thursday 4 :friday  5 :saturday  6
+              :sunday   0})
 
 (def days-to-end-of-week
   {1 6
