@@ -3,16 +3,18 @@
 
 (def month-day
   {:component/name :component.name/month-day
-   :component/type :component.type/box
+   :component/type :component.type/month-day
 
-   :component/props-path #(select-keys % [:day/no])})
+   :component/props-path #(select-keys % [:day/date])})
 
 (def month
   {:component/name :component.name/month
-   :component/type :component.type/list
+   :component/type :component.type/month
 
-   :component/props-path #(select-keys % [:month/days])
-   :component/children [month-day]})
+   :component/props-path #(select-keys % [:calendar/active-month-days])
+   :component/sub-components
+   {:month/day (fn [day]
+                 (update month-day :component/props merge {:day/date day}))}})
 
 (def prev-month
   {:component/name       :component.name/prev-month

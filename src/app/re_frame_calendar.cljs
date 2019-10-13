@@ -23,6 +23,25 @@
   (let [component-props (props-path props)]
     [:div (str (:button/name component-props))]))
 
+(defmethod render-component :component.type/month
+  [{:keys [:component/props-path :component/props
+           :component/children :component/sub-components]}]
+
+  (let [{:keys [:calendar/active-month-days]} (props-path props)
+        month-day-factory                     (:month/day sub-components)]
+
+    [:div {:style {:border "1px solid #777"}}
+     (->> active-month-days
+          (map #(month-day-factory %))
+          (map render-component))]))
+
+(defmethod render-component :component.type/month-day
+  [{:keys [:component/props-path :component/props
+           :component/children :component/sub-components]}]
+
+  (let [{:keys [:day/date]} (props-path props)]
+    [:div {:style {:border "1px solid #777"}} (js/JSON.stringify date)]))
+
 (defmethod render-component :default
   [{:keys [:component/name] :as component}]
 
