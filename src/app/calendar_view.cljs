@@ -11,30 +11,40 @@
   {:component/name :component.name/month
    :component/type :component.type/month
 
-   :component/props-path #(select-keys % [:calendar/active-month-days])
+   :component/props-path #(select-keys % [:calendar/month-days])
    :component/sub-components
    {:month/day (fn [day]
-                 (update month-day :component/props merge {:day/date day}))}})
+                 (-> month-day
+                     (update
+                      :component/props merge {:day/date day})
+                     (assoc
+                      :key (.getTime day))))}
+
+   :key :month})
 
 (def prev-month
   {:component/name       :component.name/prev-month
    :component/type       :component.type/button
    :component/props-path #(select-keys % [:button/name])
    :component/props      {:button/name "prev"}
-   :component/action     :calendar.action/prev-month})
+   :component/action     :calendar.action/prev-month
+
+   :key :prev-month})
 
 (def next-month
   {:component/name       :component.name/next-month
    :component/type       :component.type/button
    :component/props-path #(select-keys % [:button/name])
    :component/props      {:button/name "next"}
-   :component/action     :calendar.action/next-month})
+   :component/action     :calendar.action/next-month
+
+   :key :next-month})
 
 (def calendar
   {:component/name :component.name/calendar
    :component/type :component.type/calendar
 
-   :component/props-path #(select-keys % [:calendar/active-month-days
+   :component/props-path #(select-keys % [:calendar/month-days
                                           :calendar/active-month
                                           :calendar/active-year])
    :component/children   [next-month prev-month month]})

@@ -5,7 +5,7 @@
    :text-align  :center
    :font-size   14
    :height      36
-   :line-height 2
+   :line-height 2.3
    :font-family "Helvetica Neue"
    :flex-basis  "14.2857143%"})
 
@@ -14,6 +14,6 @@
    :display        :flex
    :flex-direction :row
    :margin         "0 auto"
-   :box-shadow     "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)"
+   :box-shadow     "0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)"
    :flex-wrap      :wrap
    :width          500})

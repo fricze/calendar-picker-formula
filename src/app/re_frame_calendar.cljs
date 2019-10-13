@@ -3,8 +3,12 @@
             [re-frame.core :as rf]
             [app.month :as month]
             [app.calendar-view :as cv]
+            [app.calendar-state :as cs]
             [app.apple-calendar-style :as style]
             [clojure.string :as str]))
+
+(defn get-props [{:keys [:component/props-path :component/props] :as c}]
+  (props-path props))
 
 (defmulti render-component :component/type)
 
@@ -16,7 +20,8 @@
     [:div {:style {}}
      (->> children
           (map #(update % :component/props merge component-props))
-          (map render-component))]))
+          (map (fn [c]
+               [render-component c])))]))
 
 (defmethod render-component :component.type/button
   [{:keys [:component/props-path :component/props]}]
@@ -28,107 +33,69 @@
   [{:keys [:component/props-path :component/props
            :component/children :component/sub-components]}]
 
-  (let [{:keys [:calendar/active-month-days]} (props-path props)
-        month-day-factory                     (:month/day sub-components)]
+  (let [{:keys [:calendar/month-days]} (props-path props)
+        month-day-component            (:month/day sub-components)]
 
     [:div {:style style/month}
-     (->> active-month-days
-          (map #(month-day-factory %))
-          (map render-component))]))
+     (->> month-days
+          (map #(month-day-component %))
+          (map (fn [day]
+               [render-component day])))]))
+
+(defn month-day-view [props]
+  (let [{:keys [:day/date]} props]
+    [:div {:style style/month-day}
+     (.getDate date)]))
 
 (defmethod render-component :component.type/month-day
   [{:keys [:component/props-path :component/props
            :component/children :component/sub-components]}]
 
-  (let [{:keys [:day/date]} (props-path props)]
-    [:div {:style style/month-day} (.getDate date)]))
+  [month-day-view (props-path props)])
 
 (defmethod render-component :default
   [{:keys [:component/name] :as component}]
 
-  #_(js/console.warn [:component-type/not-implemented (:component/type component)])
+  (js/console.warn [:component-type/not-implemented (:component/type component)])
 
   [:div
    {:key name}
    (js/JSON.stringify (clj->js component))])
 
-;; A detailed walk-through of this source code is provided in the docs:
-;; https://github.com/Day8/re-frame/blob/master/docs/CodeWalkthrough.md
-
-;; -- Domino 1 - Event Dispatch -----------------------------------------------
-
-(defn dispatch-timer-event
-  []
-  (let [now (js/Date.)]
-    (rf/dispatch [:timer now])))  ;; <-- dispatch used
-
-;; Call the dispatching function every second.
-;; `defonce` is like `def` but it ensures only one instance is ever
-;; created in the face of figwheel hot-reloading of this file.
-(defonce do-timer (js/setInterval dispatch-timer-event 1000))
-
-
 ;; -- Domino 2 - Event Handlers -----------------------------------------------
 
 
-(rf/reg-event-db              ;; sets up initial application state
- :initialize                 ;; usage:  (dispatch [:initialize])
- (fn [_ _]                   ;; the two parameters are not important here, so use _
-   {:time (js/Date.)         ;; What it returns becomes the new application state
-    :time-color "#f88"}))    ;; so the application state will initially be a map with two keys
+(rf/reg-event-db
+ :initialize
+ (fn [_ _]
+   {:calendar (cs/initial-state)}))
 
-
-(rf/reg-event-db                ;; usage:  (dispatch [:time-color-change 34562])
- :time-color-change            ;; dispatched when the user enters a new colour into the UI text field
- (fn [db [_ new-color-value]]  ;; -db event handlers given 2 parameters:  current application state and event (a vector)
-   (assoc db :time-color new-color-value)))   ;; compute and return the new application state
-
-
-(rf/reg-event-db                 ;; usage:  (dispatch [:timer a-js-Date])
- :timer                         ;; every second an event of this kind will be dispatched
- (fn [db [_ new-time]]          ;; note how the 2nd parameter is destructured to obtain the data value
-   (assoc db :time new-time)))  ;; compute and return the new application state
+(rf/reg-event-db
+ :time-color-change
+ (fn [db [_ new-color-value]]
+   (assoc db :time-color new-color-value)))
 
 
 ;; -- Domino 4 - Query  -------------------------------------------------------
 
-(rf/reg-sub
- :time
- (fn [db _]     ;; db is current app state. 2nd unused param is query vector
-   (:time db))) ;; return a query computation over the application state
 
 (rf/reg-sub
- :time-color
+ :month-days
  (fn [db _]
-   (:time-color db)))
+   (get-in db [:calendar :calendar/month-days])))
 
 
 ;; -- Domino 5 - View Functions ----------------------------------------------
 
 
-(defn clock
-  []
-  [:div.example-clock
-   {:style {:color @(rf/subscribe [:time-color])}}
-   (-> @(rf/subscribe [:time])
-       .toTimeString
-       (str/split " ")
-       first)])
-
-(defn color-input
-  []
-  [:div.color-input
-   "Time color: "
-   [:input {:type "text"
-            :value @(rf/subscribe [:time-color])
-            :on-change #(rf/dispatch [:time-color-change (-> % .-target .-value)])}]])  ;; <---
+;; #(rf/dispatch [:time-color-change (-> % .-target .-value)])
 
 (defn ui
   []
-  (let [month (month/get-days-in-month {:year 2019 :month 9})]
+  (let [month-days @(rf/subscribe [:month-days])]
     (render-component
      (update cv/calendar :component/props
-             merge {:calendar/active-month-days month}))))
+             merge {:calendar/month-days month-days}))))
 
 ;; -- Entry Point -------------------------------------------------------------
 

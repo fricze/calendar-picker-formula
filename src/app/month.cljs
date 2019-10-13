@@ -56,9 +56,6 @@
    6 5
    0 6})
 
-#_(defn create-date [year month day]
-  {:year year :month month :day day})
-
 (defn get-days-from-next-month [date bound-day]
   (let [days-length          (days-to-end-of-week bound-day)
         {:keys [month year]} (inc-month date)
