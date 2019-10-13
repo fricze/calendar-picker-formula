@@ -62,20 +62,22 @@ require number of days to right and left")
         {:keys [month year]} (inc-month date)
 
         last-in-month  (inc days-length)
-        first-in-month 1]
+        first-in-month 1
 
-    (map #(js/Date. year month %)
-         (range first-in-month last-in-month))))
+        days (range first-in-month last-in-month)]
+
+    (map #(js/Date. year month %) days)))
 
 (defn get-days-from-prev-month [date first-day]
   (let [days-length          (days-to-start-of-week first-day)
         {:keys [month year]} (dec-month date)
 
         last-in-month  (inc (month->days-no month))
-        first-in-month (- last-in-month days-length)]
+        first-in-month (- last-in-month days-length)
 
-    (map #(js/Date. year month %)
-         (range first-in-month last-in-month))))
+        days (range first-in-month last-in-month)]
+
+    (map #(js/Date. year month %) days)))
 
 (defn get-days-from-month [{:keys [month year]}]
   (let [days (range 1 (inc (month->days-no month)))]
