@@ -24,10 +24,12 @@
                [render-component c])))]))
 
 (defmethod render-component :component.type/button
-  [{:keys [:component/props-path :component/props]}]
+  [{:keys [:component/props-path :component/props :component/action]}]
 
   (let [component-props (props-path props)]
-    [:div (str (:button/name component-props))]))
+    [:div
+     {:on-click #(rf/dispatch [action])}
+     (str (:button/name component-props))]))
 
 (defmethod render-component :component.type/month
   [{:keys [:component/props-path :component/props
@@ -62,7 +64,6 @@
    {:key name}
    (js/JSON.stringify (clj->js component))])
 
-;; -- Domino 2 - Event Handlers -----------------------------------------------
 
 
 (rf/reg-event-db
@@ -71,33 +72,28 @@
    {:calendar (cs/initial-state)}))
 
 (rf/reg-event-db
- :time-color-change
- (fn [db [_ new-color-value]]
-   (assoc db :time-color new-color-value)))
+ :calendar.action/next-month
+ (fn [db]
+   (update db :calendar cs/next-month)))
 
-
-;; -- Domino 4 - Query  -------------------------------------------------------
-
+(rf/reg-event-db
+ :calendar.action/prev-month
+ (fn [db]
+   (update db :calendar cs/prev-month)))
 
 (rf/reg-sub
- :month-days
+ :calendar/month-days
  (fn [db _]
    (get-in db [:calendar :calendar/month-days])))
 
 
-;; -- Domino 5 - View Functions ----------------------------------------------
-
-
-;; #(rf/dispatch [:time-color-change (-> % .-target .-value)])
-
 (defn ui
   []
-  (let [month-days @(rf/subscribe [:month-days])]
+  (let [month-days @(rf/subscribe [:calendar/month-days])]
     (render-component
      (update cv/calendar :component/props
              merge {:calendar/month-days month-days}))))
 
-;; -- Entry Point -------------------------------------------------------------
 
 (defn render
   []

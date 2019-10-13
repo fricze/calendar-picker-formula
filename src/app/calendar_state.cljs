@@ -3,15 +3,15 @@
              [get-days-in-month
               dec-month inc-month]]))
 
-(defn next-month [{:keys [year month] :as date}]
-  (let [new-date (inc-month date)
+(defn next-month [{:keys [calendar/year calendar/month] :as date}]
+  (let [new-date (inc-month {:year year :month month})
         month    (get-days-in-month new-date)]
     {:calendar/year       (:year new-date)
      :calendar/month      (:month new-date)
      :calendar/month-days month}))
 
-(defn prev-month [{:keys [year month] :as date}]
-  (let [new-date (dec-month date)
+(defn prev-month [{:keys [calendar/year calendar/month] :as date}]
+  (let [new-date (dec-month {:year year :month month})
         month    (get-days-in-month new-date)]
     {:calendar/year       (:year new-date)
      :calendar/month      (:month new-date)
