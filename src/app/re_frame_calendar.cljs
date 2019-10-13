@@ -3,6 +3,7 @@
             [re-frame.core :as rf]
             [app.month :as month]
             [app.calendar-view :as cv]
+            [app.apple-calendar-style :as style]
             [clojure.string :as str]))
 
 (defmulti render-component :component/type)
@@ -12,7 +13,7 @@
            :component/children :component/props]}]
 
   (let [component-props (props-path props)]
-    [:div {:style {:border "1px solid #333"}}
+    [:div {:style {}}
      (->> children
           (map #(update % :component/props merge component-props))
           (map render-component))]))
@@ -30,7 +31,7 @@
   (let [{:keys [:calendar/active-month-days]} (props-path props)
         month-day-factory                     (:month/day sub-components)]
 
-    [:div {:style {:border "1px solid #777"}}
+    [:div {:style style/month}
      (->> active-month-days
           (map #(month-day-factory %))
           (map render-component))]))
@@ -40,7 +41,7 @@
            :component/children :component/sub-components]}]
 
   (let [{:keys [:day/date]} (props-path props)]
-    [:div {:style {:border "1px solid #777"}} (js/JSON.stringify date)]))
+    [:div {:style style/month-day} (.getDate date)]))
 
 (defmethod render-component :default
   [{:keys [:component/name] :as component}]
