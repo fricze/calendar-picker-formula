@@ -6,9 +6,7 @@
             [app.calendar-state :as cs]
             [app.apple-calendar-style :as style]))
 
-
 (defmulti render-component :component/type)
-
 
 (defmethod render-component :component.type/calendar
   [{:keys [:component/type :component/props-path
@@ -21,7 +19,6 @@
           (map (fn [c]
                  [render-component c])))]))
 
-
 (defmethod render-component :component.type/button
   [{:keys [:component/props-path :component/props :component/action]}]
 
@@ -30,7 +27,6 @@
      {:style    style/button
       :on-click #(rf/dispatch [action])}
      (str (:button/name component-props))]))
-
 
 (defmethod render-component :component.type/month
   [{:keys [:component/props-path :component/props
@@ -45,7 +41,6 @@
           (map (fn [day]
                  [render-component day])))]))
 
-
 (defn month-day-view [props]
   (let [{:keys [:day/date]} props]
     [:div {:style style/month-day}
@@ -57,13 +52,11 @@
 
   [month-day-view (props-path props)])
 
-
 (defmethod render-component :component.type/box
   [{:keys [:component/children :component/sub-components]}]
 
   [:div {:style style/box}
    (->> children (map (fn [c] [render-component c])))])
-
 
 (defmethod render-component :default
   [{:keys [:component/name] :as component}]
@@ -73,7 +66,6 @@
   [:div
    {:key name}
    (js/JSON.stringify (clj->js component))])
-
 
 (rf/reg-event-db
  :initialize
@@ -90,19 +82,25 @@
  (fn [db]
    (update db :calendar cs/prev-month)))
 
+(rf/reg-sub
+ :calendar/month-name
+ (fn [db _]
+   (get-in db [:calendar :calendar/month-name])))
 
 (rf/reg-sub
  :calendar/month-days
  (fn [db _]
    (get-in db [:calendar :calendar/month-days])))
 
-
 (defn ui
   []
-  (let [month-days @(rf/subscribe [:calendar/month-days])]
+  (let [month-days @(rf/subscribe [:calendar/month-days])
+        month-name @(rf/subscribe [:calendar/month-name])]
     (render-component
-     (update cv/calendar :component/props
-             merge {:calendar/month-days month-days}))))
+     (update cv/calendar
+             :component/props merge
+             {:calendar/month-days month-days
+              :calendar/month-name month-name}))))
 
 (defn render
   []

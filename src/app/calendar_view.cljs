@@ -47,11 +47,16 @@
 
    :component/children [prev-month next-month]})
 
+(def month-name
+  {:component/name :component.name/month-name
+   :component/type :component.type/month-name
+
+   :component/props-path #(select-keys % [:calendar/month-name])})
+
 (def calendar
   {:component/name :component.name/calendar
    :component/type :component.type/calendar
 
    :component/props-path #(select-keys % [:calendar/month-days
-                                          :calendar/active-month
-                                          :calendar/active-year])
-   :component/children   [calendar-controls month]})
+                                          :calendar/month-name])
+   :component/children   [calendar-controls month-name month]})
